@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,43 +17,61 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private class Robot {
-		protected int[] position;
-		protected Transform modelTransform;
+		public int[] position;
+		public Transform modelTransform;
 
 		public Robot(Transform prefab, int[] pos) {
-			this.position = pos;
-			this.modelTransform = Instantiate (prefab, new Vector3(pos[0], pos[1], pos[2]), Quaternion.identity).GetComponent<Transform>();
+			position = pos;
+			modelTransform = Instantiate (prefab, new Vector3(pos[0], pos[1], pos[2]), Quaternion.identity).GetComponent<Transform>();
 		}
 
-		public bool isMoving() {
-			return this.modelTransform.GetComponentInChildren<Rigidbody> ().velocity.magnitude != 0;
+		public bool modelIsMoving() {
+			return modelTransform.GetComponentInChildren<Rigidbody> ().velocity.magnitude != 0;
 		}
 
-		public bool tryMove(int[] movement) {
-			if (!this.isMoving ()) {
-				Debug.Log("trying to move: " + movement[0].ToString() + movement[1].ToString() + movement[2].ToString());
-			}
-			return false;
+		public int[] getNewPosition(int x, int y, int z) {
+			return new int[3]{ position [0] + x, position [1] + y, position [2] + z };
 		}
 	}
 
 	void Start () {
 		getLevelFromScene ();
-		currPlayer = new Robot (blockRobotPrefab, new int[] {1,1,0});
-
+		currPlayer = new Robot (blockRobotPrefab, new int[] { 1, 1, 0 });
 	}
 
 	void Update() {
-
-		if (Input.GetButtonDown ("left")) {
-			currPlayer.tryMove (new int[3]{ -1, 0, 0 });
+		if (Input.GetButtonDown ("Left")) {
+			movePlayer(-1, 0, 0);
 		}
-		if (Input.GetButtonDown ("right")) {
-			currPlayer.tryMove (new int[3]{ 1, 0, 0 });
+		if (Input.GetButtonDown ("Right")) {
+			movePlayer(1, 0, 0);
+		}
+		if (Input.GetButtonDown ("Up")) {
+			movePlayer(0, 0, 1);
+		}
+		if (Input.GetButtonDown ("Down")) {
+			movePlayer(0, 0, -1);
 		}
 	}
 
-	void getLevelFromScene() {
+	private bool movePlayer(int x, int y, int z) {
+		if (!currPlayer.modelIsMoving ()) {
+			Debug.Log("trying to move: " + x.ToString() + y.ToString() + z.ToString());
+			int[] newPos = currPlayer.getNewPosition(x, y, z);
+			try {
+				if (level [newPos [0], newPos [1], newPos [2]] == null && level [newPos [0], newPos [1] - 1, newPos [2]] is Block) {
+					currPlayer.position = newPos;
+					currPlayer.modelTransform.Translate (new Vector3 (x, y, z));
+				}
+			}
+			catch (IndexOutOfRangeException e) {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	private void getLevelFromScene() {
 		// Gets cube positions straight from the editor to build a data representation of the level.
 		// First get the furthest cube in each direction to create a level array of the right size
 		int[] maxPositions = new int[3]{ 0, 0, 0 };
