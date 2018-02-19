@@ -42,6 +42,16 @@ public class LevelManager : MonoBehaviour {
 
 	}
 
+	void Update() {
+
+		if (Input.GetButtonDown ("left")) {
+			currPlayer.tryMove (new int[3]{ -1, 0, 0 });
+		}
+		if (Input.GetButtonDown ("right")) {
+			currPlayer.tryMove (new int[3]{ 1, 0, 0 });
+		}
+	}
+
 	void getLevelFromScene() {
 		// Gets cube positions straight from the editor to build a data representation of the level.
 		// First get the furthest cube in each direction to create a level array of the right size
@@ -76,16 +86,6 @@ public class LevelManager : MonoBehaviour {
 					}
 				}
 			}
-		}
-	}
-		
-	void Update() {
-		
-		if (Input.GetButtonDown ("left")) {
-			currPlayer.tryMove (new int[3]{ -1, 0, 0 });
-		}
-		if (Input.GetButtonDown ("right")) {
-			currPlayer.tryMove (new int[3]{ 1, 0, 0 });
 		}
 	}
 }
