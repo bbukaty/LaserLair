@@ -7,58 +7,44 @@ public class LevelManager : MonoBehaviour {
 
 	//prefab references
 	public Transform blockRobotPrefab;
-	public Transform normalBlockPrefab;
 
-	private CubeObject[,,] level;
-	private Transform currPlayer;
+	private Block[,,] level;
+	private Robot currPlayer;
 
-	private class CubeObject {
+	private class Block {
 		private int orientation;
-
 	}
 
-	private class BlockRobot : CubeObject {
-		private bool alive;
-		private int[] position;
-		private Transform modelPosition;
+	private class Robot {
+		protected int[] position;
+		protected Transform modelTransform;
 
-		public BlockRobot(int x, int y, int z) {
-			position = new int[3] {x, y, z};
-			modelPosition = Instantiate (blockRobotPrefab, new Vector3(x, y, z), Quaternion.identity).GetComponent<Transform>();
+		public Robot(Transform prefab, int[] pos) {
+			this.position = pos;
+			this.modelTransform = Instantiate (prefab, new Vector3(pos[0], pos[1], pos[2]), Quaternion.identity).GetComponent<Transform>();
 		}
 
-		public bool isAlive() {
-			return alive;
+		public bool isMoving() {
+			return this.modelTransform.GetComponentInChildren<Rigidbody> ().velocity.magnitude != 0;
 		}
 
-		public void 
-	}
-
-	private class NormalBlock : CubeObject {
-		/*
-		public NormalBlock(float x, float y, float z) {
-			Instantiate(normalBlockPrefab, new Vector3(x, y, z), Quaternion.identity);
+		public bool tryMove(int[] movement) {
+			if (!this.isMoving ()) {
+				Debug.Log("trying to move: " + movement[0].ToString() + movement[1].ToString() + movement[2].ToString());
+			}
+			return false;
 		}
-		*/
 	}
 
 	void Start () {
 		getLevelFromScene ();
-
-		string[,,] levelSpec = new string[4, 5, 5] {
-			{{"bn","le","bn","bn","bn"},{"bn","n","n","n","n"},{"bn","n","n","n","n"},{"bn","n","n","n","n"},{"bn","n","n","n","n"}},
-			{{"bn","bn","bn","bn","bn"},{"bn","n","n","n","n"},{"bn","n","n","n","n"},{"bn","n","n","n","n"},{"bn","n","n","n","n"}},
-			{{"bn","bn","bn","bn","bn"},{"bn","n","n","n","n"},{"bn","n","n","n","n"},{"bn","n","n","n","n"},{"bn","n","n","n","n"}},
-			{{"bn","bn","bn","bn","bn"},{"bn","n","n","n","n"},{"bn","n","n","n","n"},{"bn","n","n","n","n"},{"bn","n","n","n","n"}}
-		};
-
-		//initializeLevel(levelSpec);
-		initializePlayer();
+		currPlayer = new Robot (blockRobotPrefab, new int[] {1,1,0});
 
 	}
 
 	void getLevelFromScene() {
-		// Gets the furthest cube in each direction to create a level array of the right size
+		// Gets cube positions straight from the editor to build a data representation of the level.
+		// First get the furthest cube in each direction to create a level array of the right size
 		int[] maxPositions = new int[3]{ 0, 0, 0 };
 		// for each child block of level manager
 		foreach (Transform block in transform) {
@@ -71,16 +57,17 @@ public class LevelManager : MonoBehaviour {
 				}
 			}
 		}
-		level = new CubeObject[maxPositions [0] + 1, maxPositions [1] + 1, maxPositions [2] + 1];
+		level = new Block[maxPositions [0] + 1, maxPositions [1] + 1, maxPositions [2] + 1];
 		// now populate the level array
 		foreach (Transform block in transform) {
 			int[] gridPosition = new int[3];
 			for (int i = 0; i < 3; i++) {
 				gridPosition[i] = (int)block.position [i];
 			}
-			level [gridPosition [0], gridPosition [1], gridPosition [2]] = new CubeObject ();
+			// TODO: support for different block types
+			level [gridPosition [0], gridPosition [1], gridPosition [2]] = new Block ();
 		}
-		// debug printing
+		// debug logs
 		for (int x = 0; x < level.GetLength (0); x++) {
 			for (int y = 0; y < level.GetLength (1); y++) {
 				for (int z = 0; z < level.GetLength (2); z++) {
@@ -91,41 +78,15 @@ public class LevelManager : MonoBehaviour {
 			}
 		}
 	}
-
-	
-	void initializeLevel(string[,,] levelSpec) {
-		// not for-each for now, we'll probably want indices for stuff
-		for (int z = 0; z < levelSpec.GetLength(0); z++) {
-			for (int x = 0; x < levelSpec.GetLength (1); x++) {
-				for (int y = 0; y < levelSpec.GetLength (2); y++) {
-					if (levelSpec[z, x, y] == "bn") {
-						//flip the z coordinate so in the world it looks like it does in the array
-						//level[z,x,y] = new NormalBlock(x, y, -1*z + levelSpec.GetLength(0) - 1);
-					}
-				}
-			}
-		}
-	}
-
-	void initializePlayer() {
-		currPlayer = new BlockRobot (new Vector3 (1, 1, 0));
-			
-	}
 		
 	void Update() {
-		playerIsMoving = playerModel.GetComponentInChildren<Rigidbody> ().velocity.magnitude != 0;
-		if (!playerIsMoving) {
-			if (Input.GetButtonDown ("left")) {
-				
-			}
-			if (Input.GetButtonDown ("right")) {
-				if (player.position.x + 1 < level.GetLength(1)) {
-					player.Translate(new Vector3(1, 0, 0));
-					Debug.Log("moving right");
-				}
-			}
+		
+		if (Input.GetButtonDown ("left")) {
+			currPlayer.tryMove (new int[3]{ -1, 0, 0 });
 		}
-
+		if (Input.GetButtonDown ("right")) {
+			currPlayer.tryMove (new int[3]{ 1, 0, 0 });
+		}
 	}
 }
 
