@@ -12,13 +12,15 @@ public class LevelManager : MonoBehaviour {
 
 	//prefab references
 	public Transform blockRobotPrefab;
-
-	public Transform[,,] level;
+	private Transform[,,] level;
 
 	void Start() {
 		getLevelFromScene();
 	}
 
+	///<summary>
+	///Scans through the children of the levelManager in the editor and populates the level array with them. 
+	///</summary>
 	private void getLevelFromScene() {
 		// Gets cube positions straight from the editor to build a data representation of the level.
 		// First get the furthest cube in each direction to create a level array of the right size
@@ -55,6 +57,9 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
+	///<summary>
+	///Returns whether pos is a valid index into the level array. 
+	///</summary>
 	public bool isInBounds(int[] pos) {
 		for (int i = 0; i < 3; i++) {
 			if (pos[i] < 0 || pos[i] > level.GetUpperBound(i)) {
@@ -64,10 +69,17 @@ public class LevelManager : MonoBehaviour {
 		return true;
 	}
 
+	///<summary>
+	///Returns the transform of the block at pos. 
+	///</summary>
 	public Transform getBlockIn(int[] pos) {
 		return level[pos[0], pos[1], pos[2]];
 	}
 
+	///<summary>
+	///Try to push the block at pos in the movement direction, propogates push through other blocks.
+	///Returns whether push was successful. 
+	///</summary>
 	public bool tryPush(int[] pos, int[] movement) {
 	
 		return false;
