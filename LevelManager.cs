@@ -54,5 +54,23 @@ public class LevelManager : MonoBehaviour {
 			}
 		}
 	}
+
+	public bool isInBounds(int[] pos) {
+		for (int i = 0; i < 3; i++) {
+			if (pos[i] < 0 || pos[i] > level.GetUpperBound(i)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public Transform getBlockIn(int[] pos) {
+		return level[pos[0], pos[1], pos[2]];
+	}
+
+	public bool tryPush(int[] pos, int[] movement) {
+	
+		return false;
+	}
 }
 
