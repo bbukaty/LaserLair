@@ -11,7 +11,6 @@ public class LevelManager : MonoBehaviour {
 	// public playerCharacter player;
 
 	//prefab references
-	public Transform blockRobotPrefab;
 	private Transform[,,] level;
 
 	void Start() {
