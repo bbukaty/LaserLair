@@ -28,8 +28,8 @@ public class LevelManager : MonoBehaviour {
 		foreach (Transform block in transform) {
 			for (int i = 0; i < 3; i++) {
 				int ithDimension = (int)block.position[i];
-				Debug.Assert((float)ithDimension == block.position[i], "Error: Level contains misaligned cube!");
-				Debug.Assert(ithDimension >= 0, "Error: Cube coordinates must be positive!");
+				Debug.Assert((float)ithDimension == block.position[i], "Warning: Level contains misaligned cube!");
+				Debug.Assert(ithDimension >= 0, "Warning: Cube coordinates must be positive!");
 				if (ithDimension > maxPositions[i]) {
 					maxPositions[i] = ithDimension;
 				}
@@ -49,7 +49,9 @@ public class LevelManager : MonoBehaviour {
 			for (int y = 0; y < level.GetLength(1); y++) {
 				for (int z = 0; z < level.GetLength(2); z++) {
 					if (level[x, y, z] != null) {
+						Block block = level[x, y, z].GetComponent<Block>();
 						Debug.Log("Cube at " + x.ToString() + ", " + y.ToString() + ", " + z.ToString());
+						Debug.Log("Orientation: " + block.getOrientation().ToString());
 					}
 				}
 			}
