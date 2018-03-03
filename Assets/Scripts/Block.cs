@@ -18,4 +18,8 @@ public class Block: MonoBehaviour {
             Debug.Assert(Mathf.Abs((float)orientation[i] - transform.up[i]) < 0.001, "Warning: Level contains improperly oriented cube!");
         }
     }
+
+    public void moveModel(int[] movement) {
+        transform.Translate(new Vector3(movement[0], movement[1], movement[2]));
+    }
 }

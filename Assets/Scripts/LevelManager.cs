@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour {
 	// public playerCharacter player;
 
 	//prefab references
-	private Transform[,,] level;
+	private Block[,,] level;
 
 	void Start() {
 		getLevelFromScene();
@@ -25,24 +25,25 @@ public class LevelManager : MonoBehaviour {
 		// First get the furthest cube in each direction to create a level array of the right size
 		int[] maxPositions = new int[3]{ 0, 0, 0 };
 		// for each child block of level manager
-		foreach (Transform block in transform) {
+		foreach (Transform blockTransform in transform) {
+			Debug.Assert(blockTransform.GetComponent<Block>() != null, "Warning: Block in level is missing Block script!");
 			for (int i = 0; i < 3; i++) {
-				int ithDimension = (int)block.position[i];
-				Debug.Assert((float)ithDimension == block.position[i], "Warning: Level contains misaligned cube!");
+				int ithDimension = (int)blockTransform.position[i];
+				Debug.Assert((float)ithDimension == blockTransform.position[i], "Warning: Level contains misaligned cube!");
 				Debug.Assert(ithDimension >= 0, "Warning: Cube coordinates must be positive!");
 				if (ithDimension > maxPositions[i]) {
 					maxPositions[i] = ithDimension;
 				}
 			}
 		}
-		level = new Transform[maxPositions[0] + 1, maxPositions[1] + 1, maxPositions[2] + 1];
+		level = new Block[maxPositions[0] + 1, maxPositions[1] + 1, maxPositions[2] + 1];
 		// now populate the level array
-		foreach (Transform block in transform) {
+		foreach (Transform blockTransform in transform) {
 			int[] gridPosition = new int[3];
 			for (int i = 0; i < 3; i++) {
-				gridPosition[i] = (int)block.position[i];
+				gridPosition[i] = (int)blockTransform.position[i];
 			}
-			level[gridPosition[0], gridPosition[1], gridPosition[2]] = block;
+			level[gridPosition[0], gridPosition[1], gridPosition[2]] = blockTransform.GetComponent<Block>();
 		}
 		// debug logs
 		for (int x = 0; x < level.GetLength(0); x++) {
@@ -71,10 +72,10 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	///<summary>
-	///Returns the transform of the block at pos. 
+	///Returns the item at pos in the level array or null if pos is out of bounds.
 	///</summary>
-	public Transform getBlockIn(int[] pos) {
-		return level[pos[0], pos[1], pos[2]];
+	public Block getBlockIn(int[] pos) {
+		return (isInBounds(pos)) ? level[pos[0], pos[1], pos[2]] : null;
 	}
 
 	///<summary>
@@ -82,8 +83,31 @@ public class LevelManager : MonoBehaviour {
 	///Returns whether push was successful. 
 	///</summary>
 	public bool tryPush(int[] pos, int[] movement) {
-	
-		return false;
+		bool canPush = false;
+		int[] adjacentPos = new int[3] {pos[0]+movement[0], pos[1]+movement[1], pos[2]+movement[2]};
+		Block blockToPush = getBlockIn(pos);
+		if (blockToPush.isPushable) {
+			if (isInBounds(adjacentPos)) {
+				Block adjacentBlock = getBlockIn(adjacentPos);
+				if (adjacentBlock == null) {
+					canPush = true;
+				} else if (adjacentBlock.isPushable) {
+					canPush = tryPush(adjacentPos, movement);
+				}
+			}
+		}
+		if (canPush) {
+			swapBlocks(pos, adjacentPos);
+			blockToPush.moveModel(movement);
+		}
+		
+		return canPush;
+	}
+
+	private void swapBlocks(int[] pos1, int[] pos2) {
+		Block temp = getBlockIn(pos1);
+		level[pos1[0], pos1[1], pos1[2]] = getBlockIn(pos2);
+		level[pos2[0], pos2[1], pos2[2]] = temp;
 	}
 }
 

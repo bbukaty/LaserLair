@@ -5,9 +5,9 @@ using UnityEngine;
 public class BlockRobot: MonoBehaviour {
 
 	private LevelManager levelManager;
-	public int[] levelPosition;
-	
-	void Start() {
+	public int[] levelPos;
+
+    void Start() {
 		// find the level manager object in the scene to get level data from
 		levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 	}
@@ -32,20 +32,20 @@ public class BlockRobot: MonoBehaviour {
 		return transform.GetComponentInChildren<Rigidbody>().velocity.magnitude != 0;
 	}
 
+	void moveModel(int[] movement) {
+		transform.Translate(new Vector3 (movement[0], movement[1], movement[2]));
+	}
+
 	bool movePlayer(int[] movement) {
 		if (modelIsMoving()) {
 			return false;
 		}
 		Debug.Log("trying to move: " + movement[0].ToString() + movement[1].ToString() + movement[2].ToString());
-		int[] newPos = new int[3];
-		for (int i = 0; i < 3; i++) {
-			newPos[i] = levelPosition[i] + movement[i];
-		}
+		int[] newPos = new int[3] {levelPos[0]+movement[0], levelPos[1]+movement[1], levelPos[2]+movement[2]};
 		if (!levelManager.isInBounds(newPos)) {
 			return false;
 		}
-		bool canMove = false;
-		Transform occupant = levelManager.getBlockIn(newPos);
+		Block occupant = levelManager.getBlockIn(newPos);
 		//bool canPushOccupant = true; TODO: get this from occupant
 		if (occupant == null || levelManager.tryPush(newPos, movement)) {
 			/* maybe check if there's solid ground there first
@@ -56,19 +56,10 @@ public class BlockRobot: MonoBehaviour {
 				transform.Translate (new Vector3 (x, y, z));
 			}
 			*/
-			canMove = true;
+			levelPos = newPos;
+			moveModel(movement);
+			return true;
 		} 
-		/* else if (levelManager.tryPush()){
-			occupant.Translate(new Vector3(x, y, z));
-			//TODO: this doesn't change where the blocks are in the data, just visually.
-			levelPosition = newPos;
-			transform.Translate(new Vector3 (x, y, z));
-		}
-		*/
-		if (canMove) {
-			levelPosition = newPos;
-			transform.Translate(new Vector3 (movement[0], movement[1], movement[2]));
-		}
 		return false;
 	}
 }
