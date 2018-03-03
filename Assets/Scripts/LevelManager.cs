@@ -111,8 +111,35 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public bool isInLaser(int[] pos) {
-		//TODO
-		return false;
+		bool result = false;
+		for (int sign = -1; sign <= 1; sign += 2) {
+			for (int i = 0; i < 3; i++) {
+				int[] searchOrientation = new int[3] {0, 0, 0};
+				searchOrientation[i] = sign;
+				if (isLaserInDirection(searchOrientation, pos)) {
+					result = true;
+				}
+			}
+		}
+		return result;
+	}
+
+	private bool isLaserInDirection(int[] orientation, int[] pos) {
+		int[] adjacentPos = new int[3] {pos[0]+orientation[0], pos[1]+orientation[1], pos[2]+orientation[2]};
+		if (!isInBounds(adjacentPos)) {
+			return false;
+		}
+		Block adjacentBlock = getBlockIn(adjacentPos);
+		if (adjacentBlock == null) {
+			// there's no block in the way, keep searching in this direction
+			return isLaserInDirection(orientation, adjacentPos);
+		} else if (adjacentBlock.type == "laser" && adjacentBlock.orientationIsReverseOf(orientation)) {
+			// there's a laser pointing towards pos
+			return true;
+		} else {
+			// there's a non-laser block in the way of any potential beams in this direction
+			return false;
+		}
 	}
 }
 

@@ -6,9 +6,19 @@ public class Block: MonoBehaviour {
 
     private int[] orientation;
     public bool isPushable;
+    public string type;
 
     public int[] getOrientation() {
         return orientation;
+    }
+
+    public bool orientationIsReverseOf(int[] inputOrientation) {
+        for (int i = 0; i < 3; i++) {
+            if (orientation[i] * -1 != inputOrientation[i]) {
+                return false;
+            }
+        }
+        return true;
     }
     
     void Start() {

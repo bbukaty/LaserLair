@@ -65,6 +65,7 @@ public class BlockRobot: MonoBehaviour {
 	private void getMoveConsequences() {
 		if (levelManager.isInLaser(levelPos)) {
 			// kill robot and leave block
+			Debug.Log("Robot died in laser");
 		}
 	}
 }

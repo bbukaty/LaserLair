@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65117709333367744}
   - component: {fileID: 23826056617882914}
   - component: {fileID: 54645581075573788}
-  - component: {fileID: 114516018504910630}
+  - component: {fileID: 114133528798611134}
   m_Layer: 0
   m_Name: LaserBlock
   m_TagString: Untagged
@@ -179,7 +179,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114516018504910630
+--- !u!114 &114133528798611134
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -191,6 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPushable: 1
+  type: laser
 --- !u!136 &136811849250273838
 CapsuleCollider:
   m_ObjectHideFlags: 1
