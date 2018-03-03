@@ -50,16 +50,21 @@ public class BlockRobot: MonoBehaviour {
 		if (occupant == null || levelManager.tryPush(newPos, movement)) {
 			/* maybe check if there's solid ground there first
 			int[] belowNewPos = (int[])newPos.Clone();
-			belowNewPos[1] -= 1;
-			if (levelManager.isInBounds(belowNewPos) && levelManager.getBlockIn(belowNewPos) is Transform) {
-				levelPosition = newPos;
-				transform.Translate (new Vector3 (x, y, z));
+			if (levelManager.getBlockIn(belowNewPos) != null) {
+				// move
 			}
 			*/
 			levelPos = newPos;
 			moveModel(movement);
+			getMoveConsequences();
 			return true;
 		} 
 		return false;
+	}
+
+	private void getMoveConsequences() {
+		if (levelManager.isInLaser(levelPos)) {
+			// kill robot and leave block
+		}
 	}
 }

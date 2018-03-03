@@ -109,5 +109,10 @@ public class LevelManager : MonoBehaviour {
 		level[pos1[0], pos1[1], pos1[2]] = getBlockIn(pos2);
 		level[pos2[0], pos2[1], pos2[2]] = temp;
 	}
+
+	public bool isInLaser(int[] pos) {
+		//TODO
+		return false;
+	}
 }
 

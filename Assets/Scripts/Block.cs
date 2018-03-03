@@ -7,8 +7,8 @@ public class Block: MonoBehaviour {
     private int[] orientation;
     public bool isPushable;
 
-    public Vector3 getOrientation() {
-        return transform.up;
+    public int[] getOrientation() {
+        return orientation;
     }
     
     void Start() {
