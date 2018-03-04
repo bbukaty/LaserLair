@@ -133,7 +133,7 @@ public class LevelManager : MonoBehaviour {
 		if (adjacentBlock == null) {
 			// there's no block in the way, keep searching in this direction
 			return isLaserInDirection(orientation, adjacentPos);
-		} else if (adjacentBlock.type == "laser" && adjacentBlock.orientationIsReverseOf(orientation)) {
+		} else if (adjacentBlock is LaserBlock && adjacentBlock.orientationIsReverseOf(orientation)) {
 			// there's a laser pointing towards pos
 			return true;
 		} else {

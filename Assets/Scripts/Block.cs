@@ -6,7 +6,6 @@ public class Block: MonoBehaviour {
 
     private int[] orientation;
     public bool isPushable;
-    public string type;
 
     public int[] getOrientation() {
         return orientation;
