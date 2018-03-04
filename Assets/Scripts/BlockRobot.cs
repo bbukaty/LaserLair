@@ -5,7 +5,12 @@ using UnityEngine;
 public class BlockRobot: MonoBehaviour {
 
 	private LevelManager levelManager;
-	public int[] levelPos;
+	private int[] levelPos;
+	public Transform corpsePrefab;
+
+	public void initLevelPos(int[] startPos) {
+		levelPos = startPos;
+	}
 
     void Start() {
 		// find the level manager object in the scene to get level data from
@@ -66,6 +71,9 @@ public class BlockRobot: MonoBehaviour {
 		if (levelManager.isInLaser(levelPos)) {
 			// kill robot and leave block
 			Debug.Log("Robot died in laser");
+			Transform corpse = Instantiate(corpsePrefab, new Vector3(levelPos[0], levelPos[1], levelPos[2]), Quaternion.identity, levelManager.transform);
+			levelManager.addBlock(levelPos, corpse.GetComponent<Block>());
+			Destroy(gameObject);
 		}
 	}
 }

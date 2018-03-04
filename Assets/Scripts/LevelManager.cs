@@ -110,6 +110,9 @@ public class LevelManager : MonoBehaviour {
 		level[pos2[0], pos2[1], pos2[2]] = temp;
 	}
 
+	///<summary>
+	///Returns whether or not a laser passes through position pos.
+	///</summary>
 	public bool isInLaser(int[] pos) {
 		bool result = false;
 		for (int sign = -1; sign <= 1; sign += 2) {
@@ -140,6 +143,11 @@ public class LevelManager : MonoBehaviour {
 			// there's a non-laser block in the way of any potential beams in this direction
 			return false;
 		}
+	}
+
+	public void addBlock(int[] pos, Block blockToAdd) {
+		Debug.Assert(level[pos[0],pos[1],pos[2]] == null, "Warning: Adding block into an occupied position in the level!");
+		level[pos[0],pos[1],pos[2]] = blockToAdd;
 	}
 }
 
