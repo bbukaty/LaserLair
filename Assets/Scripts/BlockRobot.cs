@@ -5,10 +5,11 @@ using UnityEngine;
 public class BlockRobot: MonoBehaviour {
 
 	private LevelManager levelManager;
-	private int[] levelPos;
+	private intTrio levelPos;
+	private intTrio orientation;
 	public Transform corpsePrefab;
 
-	public void initLevelPos(int[] startPos) {
+	public void initLevelPos(intTrio startPos) {
 		levelPos = startPos;
 	}
 
@@ -20,33 +21,42 @@ public class BlockRobot: MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButtonDown ("Left")) {
-			movePlayer(new int[3] {-1, 0, 0});
+			movePlayer(new intTrio(-1, 0, 0));
 		}
 		if (Input.GetButtonDown ("Right")) {
-			movePlayer(new int[3] {1, 0, 0});
+			movePlayer(new intTrio(1, 0, 0));
 		}
 		if (Input.GetButtonDown ("Up")) {
-			movePlayer(new int[3] {0, 0, 1});
+			movePlayer(new intTrio(0, 0, 1));
 		}
 		if (Input.GetButtonDown ("Down")) {
-			movePlayer(new int[3] {0, 0, -1});
+			movePlayer(new intTrio(0, 0, -1));
 		}
 	}
 
 	bool modelIsMoving() {
-		return transform.GetComponentInChildren<Rigidbody>().velocity.magnitude != 0;
+		Rigidbody body = transform.GetComponentInChildren<Rigidbody>();
+		return body.angularVelocity.magnitude == 0 && body.velocity.magnitude != 0;
 	}
 
-	void moveModel(int[] movement) {
-		transform.Translate(new Vector3 (movement[0], movement[1], movement[2]));
+	void moveModel(intTrio movement) {
+		transform.Translate(new Vector3 (movement.x, movement.y, movement.z));
 	}
 
-	bool movePlayer(int[] movement) {
+	bool applyInput(intTrio movement) {
 		if (modelIsMoving()) {
 			return false;
 		}
-		Debug.Log("trying to move: " + movement[0].ToString() + movement[1].ToString() + movement[2].ToString());
-		int[] newPos = new int[3] {levelPos[0]+movement[0], levelPos[1]+movement[1], levelPos[2]+movement[2]};
+		// if movement direction doesn't equal orientation
+		if (movement != levelPos) {
+			return rotatePlayer(movement);
+		}
+		return movePlayer(movement);
+	}
+
+	bool movePlayer(intTrio movement) {
+		Debug.Log("moving: " + movement.ToString());
+		intTrio newPos = levelPos + movement;
 		if (!levelManager.isInBounds(newPos)) {
 			return false;
 		}
@@ -75,5 +85,10 @@ public class BlockRobot: MonoBehaviour {
 			levelManager.addBlock(levelPos, corpse.GetComponent<Block>());
 			Destroy(gameObject);
 		}
+	}
+
+	private bool rotatePlayer(intTrio movement) {
+
+		return true;
 	}
 }

@@ -5,10 +5,13 @@ using UnityEngine;
 public class Spawner : MonoBehaviour {
 
 	public Transform[] robotPrefabs;
-	public int[] spawnLoc;
+	public intTrio spawnLoc;
+	public int x;
+	public int y;
+	public int z;
 	// Use this for initialization
 	void Start () {
-
+		spawnLoc = new intTrio(x, y, z);
 	}
 	
 	// Update is called once per frame

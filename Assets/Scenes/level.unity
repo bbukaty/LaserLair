@@ -1682,7 +1682,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   robotPrefabs:
   - {fileID: 4068319142064594, guid: b59d101d34d0ecd46a448c6d22f9ed5d, type: 2}
-  spawnLoc: 010000000100000001000000
+  x: 1
+  y: 1
+  z: 2
 --- !u!4 &863873572 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4022469652345426, guid: c3ee271e968b11244b2db41aace56d71,
