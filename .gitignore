@@ -23,6 +23,9 @@ ExportedObj/
 *.svd
 *.pdb
 
+/*.csproj
+/*.sln
+
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
@@ -34,3 +37,11 @@ sysinfo.txt
 *.apk
 *.unitypackage
 .vscode/settings.json
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
