@@ -5,14 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour {
 
 	public Transform[] robotPrefabs;
-	public intTrio spawnLoc;
-	public int x;
-	public int y;
-	public int z;
-	// Use this for initialization
-	void Start () {
-		spawnLoc = new intTrio(x, y, z);
-	}
+	public Vector3Int spawnLoc;
 	
 	// Update is called once per frame
 	void Update () {
@@ -23,5 +16,6 @@ public class Spawner : MonoBehaviour {
 			newRobot.GetComponent<BlockRobot>().initLevelPos(spawnLoc);
 		}
 	}
+
 
 }

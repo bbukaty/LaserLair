@@ -21,29 +21,30 @@ public class LevelManager : MonoBehaviour {
 	///Scans through the children of the levelManager in the editor and populates the level array with them. 
 	///</summary>
 	private void getLevelFromScene() {
-		// Gets cube positions straight from the editor to build a data representation of the level.
 		// First get the furthest cube in each direction to create a level array of the right size
-		intTrio maxPositions = new intTrio(0,0,0);
+		Vector3Int levelBounds = new Vector3Int(0,0,0);
 		// for each child block of level manager
 		foreach (Transform blockTransform in transform) {
 			Debug.Assert(blockTransform.GetComponent<Block>() != null, "Warning: Block in level is missing Block script!");
-			intTrio blockPosition = new intTrio(blockTransform.position);
+			Vector3Int blockPosition = Vector3Int.RoundToInt(blockTransform.position);
+			Debug.Assert((Vector3)blockPosition == blockTransform.position, "Warning: Improperly aligned block in editor!");
 			for (int i = 0; i < 3; i++) {
-				if (blockPosition[i] > maxPositions[i]) {
-					maxPositions[i] = blockPosition[i];
+				if (blockPosition[i] > levelBounds[i]) {
+					levelBounds[i] = blockPosition[i];
 				}
 			}
 		}
 
-		maxPositions = maxPositions + new intTrio(1,1,1); // account for zero-indexing
-		level = new Block[maxPositions.x, maxPositions.y, maxPositions.z];
+		levelBounds = levelBounds + new Vector3Int(1,1,1); // account for zero-indexing
+		level = new Block[levelBounds.x, levelBounds.y, levelBounds.z];
 		// now populate the level array
 		foreach (Transform blockTransform in transform) {
-			intTrio blockPosition = new intTrio(blockTransform.position);
+			Vector3Int blockPosition = Vector3Int.RoundToInt(blockTransform.position);
 			level[blockPosition.x, blockPosition.y, blockPosition.z] = blockTransform.GetComponent<Block>();
 		}
 		//printLevel();
 	}
+
 
 	public void printLevel() {
 		for (int x = 0; x < level.GetLength(0); x++) {
@@ -52,7 +53,7 @@ public class LevelManager : MonoBehaviour {
 					if (level[x, y, z] != null) {
 						Block block = level[x, y, z].GetComponent<Block>();
 						Debug.Log("Cube at " + x.ToString() + ", " + y.ToString() + ", " + z.ToString());
-						Debug.Log("Orientation: " + block.getOrientation().ToString());
+						Debug.Log("Orientation: " + block.orientation.ToString());
 					}
 				}
 			}
@@ -62,7 +63,7 @@ public class LevelManager : MonoBehaviour {
 	///<summary>
 	///Returns whether pos is a valid index into the level array. 
 	///</summary>
-	public bool isInBounds(intTrio pos) {
+	public bool isInBounds(Vector3Int pos) {
 		for (int i = 0; i < 3; i++) {
 			if (pos[i] < 0 || pos[i] > level.GetUpperBound(i)) {
 				return false;
@@ -74,7 +75,7 @@ public class LevelManager : MonoBehaviour {
 	///<summary>
 	///Returns the item at pos in the level array or null if pos is out of bounds.
 	///</summary>
-	public Block getBlockIn(intTrio pos) {
+	public Block getBlockIn(Vector3Int pos) {
 		return (isInBounds(pos)) ? level[pos[0], pos[1], pos[2]] : null;
 	}
 
@@ -82,10 +83,10 @@ public class LevelManager : MonoBehaviour {
 	///Try to push the block at pos in the movement direction, propogates push through other blocks.
 	///Returns whether push was successful. 
 	///</summary>
-	public bool tryPush(intTrio pos, intTrio movement) {
+	public bool tryPush(Vector3Int pos, Vector3Int movement) {
 		bool canPush = false;
 		Block blockToPush = getBlockIn(pos);
-		intTrio adjacentPos = pos + movement;
+		Vector3Int adjacentPos = pos + movement;
 		if (blockToPush.isPushable) {
 			if (isInBounds(adjacentPos)) {
 				Block adjacentBlock = getBlockIn(adjacentPos);
@@ -104,7 +105,7 @@ public class LevelManager : MonoBehaviour {
 		return canPush;
 	}
 
-	private void swapBlocks(intTrio pos1, intTrio pos2) {
+	private void swapBlocks(Vector3Int pos1, Vector3Int pos2) {
 		Block temp = getBlockIn(pos1);
 		level[pos1.x, pos1.y, pos1.z] = getBlockIn(pos2);
 		level[pos2.x, pos2.y, pos2.z] = temp;
@@ -113,11 +114,11 @@ public class LevelManager : MonoBehaviour {
 	///<summary>
 	///Returns whether or not a laser passes through position pos.
 	///</summary>
-	public bool isInLaser(intTrio pos) {
+	public bool isInLaser(Vector3Int pos) {
 		bool result = false;
 		for (int sign = -1; sign <= 1; sign += 2) {
 			for (int i = 0; i < 3; i++) {
-				intTrio searchOrientation = new intTrio(0, 0, 0);
+				Vector3Int searchOrientation = new Vector3Int(0, 0, 0);
 				searchOrientation[i] = sign;
 				if (isLaserInDirection(searchOrientation, pos)) {
 					result = true;
@@ -127,16 +128,16 @@ public class LevelManager : MonoBehaviour {
 		return result;
 	}
 
-	private bool isLaserInDirection(intTrio orientation, intTrio pos) {
-		intTrio adjacentPos = pos + orientation;
+	private bool isLaserInDirection(Vector3Int direction, Vector3Int pos) {
+		Vector3Int adjacentPos = pos + direction;
 		if (!isInBounds(adjacentPos)) {
 			return false;
 		}
 		Block adjacentBlock = getBlockIn(adjacentPos);
 		if (adjacentBlock == null) {
 			// there's no block in the way, keep searching in this direction
-			return isLaserInDirection(orientation, adjacentPos);
-		} else if (adjacentBlock is LaserBlock && adjacentBlock.getOrientation() == orientation * -1) {
+			return isLaserInDirection(direction, adjacentPos);
+		} else if (adjacentBlock is LaserBlock && adjacentBlock.orientation == direction * -1) {
 			// there's a laser pointing towards pos
 			return true;
 		} else {
@@ -145,7 +146,7 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	public void addBlock(intTrio pos, Block blockToAdd) {
+	public void addBlock(Vector3Int pos, Block blockToAdd) {
 		Debug.Assert(level[pos.x, pos.y, pos.z] == null, "Warning: Adding block into an occupied position in the level!");
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}

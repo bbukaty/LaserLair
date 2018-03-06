@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class Block: MonoBehaviour {
 
-    private intTrio orientation;
+    public Vector3Int orientation;
     public bool isPushable;
 
-    public intTrio getOrientation() {
-        return orientation;
-    }
-
     void Start() {
-        orientation = new intTrio(transform.up);
+        orientation = new Vector3Int();
+        for (int i = 0; i < 3; i++) {
+            Debug.Assert(Mathf.Abs((float)(int)transform.up[i] - transform.up[i]) < 0.001, "Warning: Level contains improperly oriented cube!");
+            orientation[i] = (int)transform.up[i];
+        }
     }
 
-    public void moveModel(intTrio movement) {
-        transform.Translate(new Vector3(movement.x, movement.y, movement.z));
+    public void moveModel(Vector3Int movement) {
+        transform.Translate(movement);
     }
+    
 }

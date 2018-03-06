@@ -5,11 +5,11 @@ using UnityEngine;
 public class BlockRobot: MonoBehaviour {
 
 	private LevelManager levelManager;
-	private intTrio levelPos;
-	private intTrio orientation;
+	private Vector3Int levelPos;
+	private Vector3Int orientation;
 	public Transform corpsePrefab;
 
-	public void initLevelPos(intTrio startPos) {
+	public void initLevelPos(Vector3Int startPos) {
 		levelPos = startPos;
 	}
 
@@ -21,16 +21,16 @@ public class BlockRobot: MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetButtonDown ("Left")) {
-			movePlayer(new intTrio(-1, 0, 0));
+			movePlayer(new Vector3Int(-1, 0, 0));
 		}
 		if (Input.GetButtonDown ("Right")) {
-			movePlayer(new intTrio(1, 0, 0));
+			movePlayer(new Vector3Int(1, 0, 0));
 		}
 		if (Input.GetButtonDown ("Up")) {
-			movePlayer(new intTrio(0, 0, 1));
+			movePlayer(new Vector3Int(0, 0, 1));
 		}
 		if (Input.GetButtonDown ("Down")) {
-			movePlayer(new intTrio(0, 0, -1));
+			movePlayer(new Vector3Int(0, 0, -1));
 		}
 	}
 
@@ -39,11 +39,11 @@ public class BlockRobot: MonoBehaviour {
 		return body.angularVelocity.magnitude == 0 && body.velocity.magnitude != 0;
 	}
 
-	void moveModel(intTrio movement) {
-		transform.Translate(new Vector3 (movement.x, movement.y, movement.z));
+	void moveModel(Vector3Int movement) {
+		transform.Translate(movement);
 	}
 
-	bool applyInput(intTrio movement) {
+	bool applyInput(Vector3Int movement) {
 		if (modelIsMoving()) {
 			return false;
 		}
@@ -54,9 +54,9 @@ public class BlockRobot: MonoBehaviour {
 		return movePlayer(movement);
 	}
 
-	bool movePlayer(intTrio movement) {
+	bool movePlayer(Vector3Int movement) {
 		Debug.Log("moving: " + movement.ToString());
-		intTrio newPos = levelPos + movement;
+		Vector3Int newPos = levelPos + movement;
 		if (!levelManager.isInBounds(newPos)) {
 			return false;
 		}
@@ -81,14 +81,15 @@ public class BlockRobot: MonoBehaviour {
 		if (levelManager.isInLaser(levelPos)) {
 			// kill robot and leave block
 			Debug.Log("Robot died in laser");
-			Transform corpse = Instantiate(corpsePrefab, new Vector3(levelPos[0], levelPos[1], levelPos[2]), Quaternion.identity, levelManager.transform);
+			Transform corpse = Instantiate(corpsePrefab, levelPos, Quaternion.identity, levelManager.transform);
 			levelManager.addBlock(levelPos, corpse.GetComponent<Block>());
 			Destroy(gameObject);
 		}
 	}
 
-	private bool rotatePlayer(intTrio movement) {
+	private bool rotatePlayer(Vector3Int movement) {
 
 		return true;
 	}
+	
 }
