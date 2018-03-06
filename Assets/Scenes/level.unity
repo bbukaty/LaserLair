@@ -1705,7 +1705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   robotPrefabs:
-  - {fileID: 4068319142064594, guid: b59d101d34d0ecd46a448c6d22f9ed5d, type: 2}
+  - {fileID: 4484748619337876, guid: d9662dbfbd6f82b47b6c862a659beb97, type: 2}
   spawnLoc: {x: 1, y: 1, z: 1}
 --- !u!4 &863873572 stripped
 Transform:

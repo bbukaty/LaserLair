@@ -12,8 +12,9 @@ public class Spawner : MonoBehaviour {
 		//TODO: switch between robot prefabs in robotPrefabs array
 		//have icons for each type of robot that you click on to change selected robot
 		if (Input.GetButtonDown("Jump")) {
-			Transform newRobot = Instantiate(robotPrefabs[0], new Vector3(spawnLoc[0], spawnLoc[1], spawnLoc[2]), Quaternion.identity);
-			newRobot.GetComponent<BlockRobot>().initLevelPos(spawnLoc);
+			Robot newRobot = Instantiate(robotPrefabs[0], spawnLoc, Quaternion.identity).GetComponent<Robot>();
+			newRobot.rotateModelTo(new Vector3Int(0,0,1));
+			newRobot.setLevelPos(spawnLoc);
 		}
 	}
 

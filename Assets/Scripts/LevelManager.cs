@@ -53,7 +53,7 @@ public class LevelManager : MonoBehaviour {
 					if (level[x, y, z] != null) {
 						Block block = level[x, y, z].GetComponent<Block>();
 						Debug.Log("Cube at " + x.ToString() + ", " + y.ToString() + ", " + z.ToString());
-						Debug.Log("Orientation: " + block.orientation.ToString());
+						Debug.Log("Orientation: " + block.getOrientation().ToString());
 					}
 				}
 			}
@@ -137,7 +137,7 @@ public class LevelManager : MonoBehaviour {
 		if (adjacentBlock == null) {
 			// there's no block in the way, keep searching in this direction
 			return isLaserInDirection(direction, adjacentPos);
-		} else if (adjacentBlock is LaserBlock && adjacentBlock.orientation == direction * -1) {
+		} else if (adjacentBlock is LaserBlock && adjacentBlock.getOrientation() == direction * -1) {
 			// there's a laser pointing towards pos
 			return true;
 		} else {
