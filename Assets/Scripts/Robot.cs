@@ -6,6 +6,8 @@ public class Robot: CubeObject {
 
     protected LevelManager levelManager;
     protected Vector3Int levelPos;
+	public bool isGrabbing;
+
 	public Transform corpsePrefab;
 
     public void setLevelPos(Vector3Int pos) {
@@ -21,21 +23,21 @@ public class Robot: CubeObject {
         // find the level manager object in the scene to get level data from
 		levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         initOrientation();
+		isGrabbing = false;
     }
 
     // Update is called once per frame
 	void Update () {
 		if (Input.GetButtonDown ("Left")) {
 			applyInput(new Vector3Int(-1, 0, 0));
-		}
-		if (Input.GetButtonDown ("Right")) {
+		} else if (Input.GetButtonDown ("Right")) {
 			applyInput(new Vector3Int(1, 0, 0));
-		}
-		if (Input.GetButtonDown ("Up")) {
+		} else if (Input.GetButtonDown ("Up")) {
 			applyInput(new Vector3Int(0, 0, 1));
-		}
-		if (Input.GetButtonDown ("Down")) {
+		} else if (Input.GetButtonDown ("Down")) {
 			applyInput(new Vector3Int(0, 0, -1));
+		} else if (Input.GetButtonDown("Grab") && !modelIsMoving()) {
+			tryGrab();
 		}
 	}
 
@@ -43,19 +45,26 @@ public class Robot: CubeObject {
 		if (modelIsMoving()) {
 			return;
 		}
-		// if movement axis doesn't align with current orientation
-		if (movement != orientation && movement != orientation * -1) {
-			rotateModelTo(movement);
-		} else {
+		if (movement == orientation) {
 			movePlayer(movement);
+		} else if (movement == orientation * -1) {
+			bool moved = movePlayer(movement); 
+			if (isGrabbing && moved) {
+				// pull grabbed block backwards, *2 because we just moved 1 more away from the block to pull
+				levelManager.tryPush(levelPos + orientation*2, movement);
+			}
+		} else { // movement axis doesn't align with current orientation
+			// drop grabbed block
+			isGrabbing = false;
+			rotateModelTo(movement);
 		}
 	}
 
-	private void movePlayer(Vector3Int movement) {
+	private bool movePlayer(Vector3Int movement) {
 		Debug.Log("moving: " + movement.ToString());
 		Vector3Int newPos = levelPos + movement;
 		if (!levelManager.isInBounds(newPos)) {
-			return;
+			return false;
 		}
 		Block occupant = levelManager.getBlockIn(newPos);
 		if (occupant == null || levelManager.tryPush(newPos, movement)) {
@@ -68,9 +77,10 @@ public class Robot: CubeObject {
 			levelPos = newPos;
 			moveModel(movement);
 			getMoveConsequences();
+			return true;
 		} else {
 			// TODO: display "can't move" animation
-			return;
+			return false;
 		}
 	}
 
@@ -78,4 +88,7 @@ public class Robot: CubeObject {
         return;
     }
 
+	protected virtual void tryGrab() {
+		return;
+	}
 }

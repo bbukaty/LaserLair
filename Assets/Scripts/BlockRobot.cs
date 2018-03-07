@@ -14,4 +14,12 @@ public class BlockRobot: Robot {
 		}
 	}
 
+	protected override void tryGrab() {
+		if (isGrabbing) {
+			isGrabbing = false;
+		} else if (levelManager.getBlockIn(levelPos + orientation) != null) {
+			// toggle grab animation
+			isGrabbing = true;
+		}
+	}
 }
