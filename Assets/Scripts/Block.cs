@@ -5,6 +5,7 @@ using UnityEngine;
 public class Block: CubeObject {
 
     public bool isPushable;
+    public bool isDestructible;
 
     void Start() {
         initOrientation();

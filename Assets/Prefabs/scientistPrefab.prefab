@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 54132360496820124}
   - component: {fileID: 114134205688363984}
   m_Layer: 0
-  m_Name: scientist
+  m_Name: scientistPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
