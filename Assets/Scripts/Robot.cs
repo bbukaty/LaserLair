@@ -51,7 +51,8 @@ public class Robot: CubeObject {
 			bool moved = movePlayer(movement); 
 			if (isGrabbing && moved) {
 				// pull grabbed block backwards, *2 because we just moved 1 more away from the block to pull
-				levelManager.tryPush(levelPos + orientation*2, movement);
+				isGrabbing = levelManager.tryPush(levelPos + orientation*2, movement);
+				// set isGrabbing to whether could push, so that if you try to pull heavy you stop grabbing
 			}
 		} else { // movement axis doesn't align with current orientation
 			// drop grabbed block
