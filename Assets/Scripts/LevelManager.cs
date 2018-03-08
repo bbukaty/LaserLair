@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour {
 
-	// NOTES:
-	// robot script is a component, it can ask the level manager if moving is ok, maybe get input there?
-	// getComponent<PlayerCharacter> <- name of script
-	// public playerCharacter player;
-
-	//prefab references
 	private Block[,,] level;
 
 	void Start() {
@@ -26,25 +20,24 @@ public class LevelManager : MonoBehaviour {
 		// for each child block of level manager
 		foreach (Transform blockTransform in transform) {
 			Debug.Assert(blockTransform.GetComponent<Block>() != null, "Warning: Block in level is missing Block script!");
-			Vector3Int blockPosition = Vector3Int.RoundToInt(blockTransform.position);
-			Debug.Assert((Vector3)blockPosition == blockTransform.position, "Warning: Improperly aligned block in editor!");
+			Block block = blockTransform.GetComponent<Block>();
 			for (int i = 0; i < 3; i++) {
-				if (blockPosition[i] > levelBounds[i]) {
-					levelBounds[i] = blockPosition[i];
+				Debug.Log("Block at pos: " + block.levelPos.ToString());
+				if (block.levelPos[i] > levelBounds[i]) {
+					levelBounds[i] = block.levelPos[i];
 				}
 			}
 		}
 
 		levelBounds = levelBounds + new Vector3Int(1,1,1); // account for zero-indexing
 		level = new Block[levelBounds.x, levelBounds.y, levelBounds.z];
+		
 		// now populate the level array
 		foreach (Transform blockTransform in transform) {
-			Vector3Int blockPosition = Vector3Int.RoundToInt(blockTransform.position);
-			level[blockPosition.x, blockPosition.y, blockPosition.z] = blockTransform.GetComponent<Block>();
+			addBlock(blockTransform.GetComponent<Block>());
 		}
-		//printLevel();
+		printLevel();
 	}
-
 
 	public void printLevel() {
 		for (int x = 0; x < level.GetLength(0); x++) {
@@ -52,8 +45,8 @@ public class LevelManager : MonoBehaviour {
 				for (int z = 0; z < level.GetLength(2); z++) {
 					if (level[x, y, z] != null) {
 						Block block = level[x, y, z].GetComponent<Block>();
-						Debug.Log("Cube at " + x.ToString() + ", " + y.ToString() + ", " + z.ToString());
-						Debug.Log("Orientation: " + block.getOrientation().ToString());
+						Debug.Log("Cube at " + block.levelPos.ToString());
+						Debug.Log("Orientation: " + block.orientation.ToString());
 					}
 				}
 			}
@@ -137,7 +130,7 @@ public class LevelManager : MonoBehaviour {
 		if (adjacentBlock == null) {
 			// there's no block in the way, keep searching in this direction
 			return isLaserInDirection(direction, adjacentPos);
-		} else if (adjacentBlock is LaserBlock && adjacentBlock.getOrientation() == direction * -1) {
+		} else if (adjacentBlock is LaserBlock && adjacentBlock.orientation == direction * -1) {
 			// there's a laser pointing towards pos
 			return true;
 		} else {
@@ -146,7 +139,8 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	public void addBlock(Vector3Int pos, Block blockToAdd) {
+	public void addBlock(Block blockToAdd) {
+		Vector3Int pos = blockToAdd.levelPos;
 		Debug.Assert(level[pos.x, pos.y, pos.z] == null, "Warning: Adding block into an occupied position in the level!");
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}

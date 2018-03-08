@@ -4,30 +4,24 @@ using UnityEngine;
 
 public class Robot: CubeObject {
 
-    protected LevelManager levelManager;
-    protected Vector3Int levelPos;
-	public bool isGrabbing;
-
 	public Transform corpsePrefab;
 
-    protected void initPos() {
-		// transform.position will always be set with a Vector3Int in spawner, so no checks for float to int errors needed
-		levelPos = Vector3Int.RoundToInt(transform.position);
-		Debug.Assert(levelManager.isInBounds(levelPos), "Warning: Player spawned outside of level bounds! Check spawn location in the editor.");
-	}
+    protected LevelManager levelManager;
+	protected bool isGrabbing;
 
     bool modelIsMoving() {
 		Rigidbody body = transform.GetComponentInChildren<Rigidbody>();
 		return body.angularVelocity.magnitude == 0 && body.velocity.magnitude != 0;
 	}
 
-    void Start() {
+	void Awake() {
         // find the level manager object in the scene to get level data from
 		levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        initOrientation();
-		initPos();
+		Debug.Assert(levelManager != null, "Warning: Level Manager script not found in scene!");
 		isGrabbing = false;
-    }
+        initOrientation();
+		initLevelPos();
+	}
 
     // Update is called once per frame
 	void Update () {

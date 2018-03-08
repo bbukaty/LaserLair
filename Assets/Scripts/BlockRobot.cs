@@ -6,10 +6,10 @@ public class BlockRobot: Robot {
 
 	protected override void getMoveConsequences() {
 		if (levelManager.isInLaser(levelPos)) {
-			// kill robot and leave block
 			Debug.Log("Robot died in laser");
+			// Destroy robot and leave corpse object in its place, parented to level manager
 			Transform corpse = Instantiate(corpsePrefab, levelPos, Quaternion.identity, levelManager.transform);
-			levelManager.addBlock(levelPos, corpse.GetComponent<Block>());
+			levelManager.addBlock(corpse.GetComponent<Block>());
 			Destroy(gameObject);
 		}
 	}

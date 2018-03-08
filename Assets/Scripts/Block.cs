@@ -7,7 +7,8 @@ public class Block: CubeObject {
     public bool isPushable;
     public bool isDestructible;
 
-    void Start() {
+    void Awake() {
         initOrientation();
+		initLevelPos();
     }
 }
