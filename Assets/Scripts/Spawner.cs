@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Spawner : MonoBehaviour {
 
 	public Transform robotButton;
+	public Transform buttonPanel;
 	public Transform[] robotPrefabs;
 	public Vector3Int spawnLoc;
 	public FollowCamera playerCam;
@@ -16,7 +17,7 @@ public class Spawner : MonoBehaviour {
 		currPlayer = null;
 		// create a UI spawn button for each robot prefab
 		foreach (Transform robotPrefab in robotPrefabs) {
-			Transform buttonTransform = Instantiate(robotButton, transform);
+			Transform buttonTransform = Instantiate(robotButton, buttonPanel);
 			buttonTransform.GetComponent<Button>().onClick.AddListener(delegate{spawn(robotPrefab);});
 		}
 	}
