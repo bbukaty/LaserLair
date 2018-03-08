@@ -10,8 +10,10 @@ public class Robot: CubeObject {
 
 	public Transform corpsePrefab;
 
-    public void setLevelPos(Vector3Int pos) {
-		levelPos = pos;
+    protected void initPos() {
+		// transform.position will always be set with a Vector3Int in spawner, so no checks for float to int errors needed
+		levelPos = Vector3Int.RoundToInt(transform.position);
+		Debug.Assert(levelManager.isInBounds(levelPos), "Warning: Player spawned outside of level bounds! Check spawn location in the editor.");
 	}
 
     bool modelIsMoving() {
@@ -23,6 +25,7 @@ public class Robot: CubeObject {
         // find the level manager object in the scene to get level data from
 		levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         initOrientation();
+		initPos();
 		isGrabbing = false;
     }
 
