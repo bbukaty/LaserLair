@@ -144,5 +144,14 @@ public class LevelManager : MonoBehaviour {
 		Debug.Assert(level[pos.x, pos.y, pos.z] == null, "Warning: Adding block into an occupied position in the level!");
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}
+
+	public void removeBlock(Vector3Int pos){
+		Block block = levelManager.getBlockIn(pos);
+		if (block != null){
+			if (block.isDestructible) {
+				Destroy(block);
+			}
+		}
+	}
 }
 
