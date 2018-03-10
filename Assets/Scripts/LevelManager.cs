@@ -127,7 +127,7 @@ public class LevelManager : MonoBehaviour {
 			return false;
 		}
 		Block adjacentBlock = getBlockIn(adjacentPos);
-		if (adjacentBlock == null) {
+		if (adjacentBlock == null || adjacentBlock is GlassBlock) {
 			// there's no block in the way, keep searching in this direction
 			return isLaserInDirection(direction, adjacentPos);
 		} else if (adjacentBlock is LaserBlock && adjacentBlock.orientation == direction * -1) {
