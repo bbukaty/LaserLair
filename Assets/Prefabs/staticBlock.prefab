@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 54192830026340394}
   - component: {fileID: 114827872247493406}
   m_Layer: 0
-  m_Name: steelBlock
+  m_Name: staticBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

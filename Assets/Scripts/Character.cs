@@ -102,7 +102,7 @@ public class Character: CubeObject {
 	private void fall() {
 		// remove character component in the meantime so they can't move while falling
 		Destroy(this);
-		Destroy(gameObject, 5);
+		Destroy(gameObject, 2);
 		Rigidbody body = GetComponent<Rigidbody>();
 		body.useGravity = true;
 		body.isKinematic = false;

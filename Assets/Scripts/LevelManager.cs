@@ -23,7 +23,6 @@ public class LevelManager : MonoBehaviour {
 			Debug.Assert(blockTransform.GetComponent<Block>() != null, "Warning: Block in level is missing Block script!");
 			Block block = blockTransform.GetComponent<Block>();
 			for (int i = 0; i < 3; i++) {
-				Debug.Log("Block at pos: " + block.levelPos.ToString());
 				if (block.levelPos[i] > levelBounds[i]) {
 					levelBounds[i] = block.levelPos[i];
 				}
@@ -37,7 +36,7 @@ public class LevelManager : MonoBehaviour {
 		foreach (Transform blockTransform in transform) {
 			addBlock(blockTransform.GetComponent<Block>());
 		}
-		printLevel();
+		// printLevel();
 	}
 
 	public void printLevel() {
@@ -158,11 +157,41 @@ public class LevelManager : MonoBehaviour {
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}
 
-	public void explodeBlock(Vector3Int pos){
+	public void explodePos(Vector3Int pos) {
+		for (int sign = -1; sign <= 1; sign += 2) {
+			for (int i = 0; i < 3; i++) {
+				Vector3Int searchOrientation = new Vector3Int(0, 0, 0);
+				searchOrientation[i] = sign;
+				explodeDirection(searchOrientation, pos);
+			}
+		}
+	}
+
+	public void explodeDirection(Vector3Int direction, Vector3Int pos) {
+		Vector3Int adjacentPos = pos + direction;
+		if (!isInBounds(adjacentPos)) {
+			return;
+		}
+		if (getBlockIn(adjacentPos) == null) {
+			// play explode animation on empty block, continue
+			explodeDirection(direction, adjacentPos);
+		} else if (tryExplodeBlock(adjacentPos)) {
+			// adjacent pos block was destructible, continue
+			explodeDirection(direction, adjacentPos);
+			// return; // if you want to only blow up one block in a direction
+		} else {
+			// there's a non-laser block in the way of any potential beams in this direction
+			return;
+		}
+	}
+
+	public bool tryExplodeBlock(Vector3Int pos){
 		Block toExplode = getBlockIn(pos);  
 		if (toExplode != null && toExplode.isDestructible) {
 			Destroy(toExplode.gameObject);
+			return true;
 		}
+		return false;
 	}
 }
 
