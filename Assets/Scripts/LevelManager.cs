@@ -144,5 +144,12 @@ public class LevelManager : MonoBehaviour {
 		Debug.Assert(level[pos.x, pos.y, pos.z] == null, "Warning: Adding block into an occupied position in the level!");
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}
+
+	public void explodeBlock(Vector3Int pos){
+		Block toExplode = getBlockIn(pos);  
+		if (toExplode != null && toExplode.isDestructible) {
+			Destroy(toExplode.gameObject);
+		}
+	}
 }
 
