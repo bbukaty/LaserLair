@@ -1,11 +1,11 @@
+main menu/level select
+UI robot icons
+
 explode robot - explosion tilts blocks in radius? (only pushable blocks)
-laser redirection bot - line renderer component same as laser block, but enable/disable based on level state
-goal blocks
-scientist prefab/spawner logic
- - can't walk into lasers?/off cliffs
-make a decision on jumping
-
 spawn assets/animation, drop from ceiling? dispenser? scientis pulls out, then grows?
-tilt blocks effect
+laser redirection bot - line renderer component same as laser block, but enable/disable based on level state
 
 
+
+
+make a decision on jumping - (no for now)
