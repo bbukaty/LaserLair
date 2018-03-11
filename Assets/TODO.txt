@@ -8,4 +8,4 @@ laser redirection bot - line renderer component same as laser block, but enable/
 
 
 
-make a decision on jumping - (no for now)
+interactions between falling and lasers

@@ -52,14 +52,21 @@ public class Character: CubeObject {
 		if (modelIsMoving()) {
 			return;
 		}
-		if (movement == orientation) {
-			moveCharacter(movement);
-		} else if (movement == orientation * -1) {
-			bool moved = moveCharacter(movement); 
-			if (isGrabbing && moved) {
-				// pull grabbed block backwards, orientation*2 because we just moved 1 more away from the block to pull
-				isGrabbing = levelManager.tryPush(levelPos + orientation*2, movement);
-				// set isGrabbing to whether could push, so that if you try to pull heavy you stop grabbing
+		Debug.Log("moving: " + movement.ToString());
+		if (movement == orientation || movement == orientation * -1) {
+			if (isGrabbing) {
+				Vector3Int grabBlockPos = levelPos + orientation;
+				if (tryMove(movement, justChecking: true) && levelManager.tryPush(grabBlockPos, movement)) {
+					tryMove(movement);
+				}
+			} else {
+				Debug.Log("levelPos:" + levelPos.ToString());
+				Debug.Log("blockIn pos + mov: " + levelManager.getBlockIn(levelPos + movement));
+				if (levelManager.getBlockIn(levelPos + movement) == null) {
+					tryMove(movement);
+				} else {
+					tryJump(movement);
+				}
 			}
 		} else { // movement axis doesn't align with current orientation
 			// drop grabbed block
@@ -68,17 +75,18 @@ public class Character: CubeObject {
 		}
 	}
 
-	private bool moveCharacter(Vector3Int movement) {
-		Debug.Log("moving: " + movement.ToString());
+	private bool tryMove(Vector3Int movement, bool justChecking = false) {
 		Vector3Int newPos = levelPos + movement;
 		if (!levelManager.isInBounds(newPos)) {
 			return false;
 		}
 		Block occupant = levelManager.getBlockIn(newPos);
-		if (occupant == null || levelManager.tryPush(newPos, movement)) {
-			levelPos = newPos;
-			moveModel(movement);
-			getMoveConsequences();
+		if (occupant == null || levelManager.tryPush(newPos, movement, justChecking)) {
+			if (!justChecking) {
+				levelPos = newPos;
+				moveModel(movement);
+				getMoveConsequences();
+			}
 			return true;
 		} else {
 			// TODO: display "can't move" animation
@@ -89,22 +97,35 @@ public class Character: CubeObject {
     protected virtual void getMoveConsequences() {
         if (levelManager.isInLaser(levelPos)) {
 			die();
-		} else if (levelManager.getBlockUnder(levelPos) == null) {
-			fall();
 		}
+		tryFall();
     }
 	
+	protected virtual void tryJump(Vector3Int movement) {
+		if (levelManager.getBlockIn(levelPos + movement + Vector3Int.up) == null) {
+			levelPos += movement + Vector3Int.up;
+			moveModel(movement + Vector3Int.up);
+			getMoveConsequences();
+		}
+	}
 
 	protected virtual void die() {
 		return;
 	}
 
-	private void fall() {
-		// remove character component in the meantime so they can't move while falling
-		Destroy(this);
-		Destroy(gameObject, 2);
-		Rigidbody body = GetComponent<Rigidbody>();
-		body.useGravity = true;
-		body.isKinematic = false;
+	private void tryFall() {
+		Vector3Int below = levelPos + Vector3Int.down;
+		if (!levelManager.isInBounds(below)) {
+			// fall out of level, remove character component while falling so they can't move
+			Destroy(this);
+			Destroy(gameObject, 2);
+			Rigidbody body = GetComponent<Rigidbody>();
+			body.useGravity = true;
+			body.isKinematic = false;
+		} else if (levelManager.getBlockIn(below) == null) {
+			levelPos = below;
+			moveModel(Vector3Int.down);
+			getMoveConsequences();
+		}
 	}
 }

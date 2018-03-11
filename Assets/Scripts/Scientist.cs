@@ -14,4 +14,8 @@ public class Scientist: Character {
 			levelManager.win();
 		}
 	}
+
+	protected override void tryJump(Vector3Int movement) {
+		return;
+	}
 }

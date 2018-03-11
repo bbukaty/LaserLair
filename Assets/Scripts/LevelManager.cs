@@ -84,11 +84,16 @@ public class LevelManager : MonoBehaviour {
 		return (isInBounds(under)) ? level[under[0], under[1], under[2]] : null;
 	}
 
+	public Block getBlockAbove(Vector3Int pos) {
+		Vector3Int above = pos + new Vector3Int(0,1,0);
+		return (isInBounds(above)) ? level[above[0], above[1], above[2]] : null;
+	}
+
 	///<summary>
 	///Try to push the block at pos in the movement direction, propogates push through other blocks.
 	///Returns whether push was successful. 
 	///</summary>
-	public bool tryPush(Vector3Int pos, Vector3Int movement) {
+	public bool tryPush(Vector3Int pos, Vector3Int movement, bool justChecking = true) {
 		bool canPush = false;
 		Block blockToPush = getBlockIn(pos);
 		Vector3Int adjacentPos = pos + movement;
@@ -102,7 +107,7 @@ public class LevelManager : MonoBehaviour {
 				}
 			}
 		}
-		if (canPush) {
+		if (canPush && !justChecking) {
 			swapBlocks(pos, adjacentPos);
 			blockToPush.moveModel(movement);
 		}
