@@ -23,9 +23,9 @@ GameObject:
   - component: {fileID: 65117709333367744}
   - component: {fileID: 23826056617882914}
   - component: {fileID: 54645581075573788}
-  - component: {fileID: 114584173627039644}
+  - component: {fileID: 114305532264811700}
   m_Layer: 0
-  m_Name: GrassBlock
+  m_Name: GlassBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 3740b226fbfe5854d9e0f1c876ce837d, type: 2}
+  - {fileID: 2100000, guid: 25263390348ec432f9a0fc4553cf66d5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -112,7 +112,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114584173627039644
+--- !u!114 &114305532264811700
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -120,7 +120,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1294912835850980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ec2498d75e2c684dbff29fca4554de0, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d7ca41a242004d72b1fdf913526ce46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPushable: 1
+  orientation: {x: 0, y: 0, z: 0}
+  levelPos: {x: 0, y: 0, z: 0}
+  isPushable: 0
+  isDestructible: 0

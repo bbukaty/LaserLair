@@ -257,7 +257,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec2498d75e2c684dbff29fca4554de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  orientation: {x: 0, y: 0, z: 0}
+  levelPos: {x: 0, y: 0, z: 0}
   isPushable: 1
+  isDestructible: 1
 --- !u!136 &136063561633755360
 CapsuleCollider:
   m_ObjectHideFlags: 1
