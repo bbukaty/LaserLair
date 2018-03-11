@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: 11d66d57bca45324d9b37d6a36e52475
-timeCreated: 1519466098
+timeCreated: 1520728733
 licenseType: Free
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - robotButton: {fileID: 224694288127943604, guid: 670cb6484e59ebf41afe5c200ecbe391,
+      type: 2}
+  - buttonPanel: {instanceID: 0}
+  - playerCam: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
