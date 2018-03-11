@@ -86,11 +86,10 @@ public class Character: CubeObject {
 		}
 	}
 
-    private void getMoveConsequences() {
+    protected virtual void getMoveConsequences() {
         if (levelManager.isInLaser(levelPos)) {
 			die();
-		} else if (levelManager.getBlockIn(levelPos + new Vector3Int(0,-1,0)) == null) {
-			// no block underneath current pos
+		} else if (levelManager.getBlockUnder(levelPos) == null) {
 			fall();
 		}
     }

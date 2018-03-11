@@ -8,4 +8,10 @@ public class Scientist: Character {
 		Destroy(gameObject);
 	}
 
+	protected override void getMoveConsequences() {
+		base.getMoveConsequences();
+		if (levelManager.getBlockUnder(levelPos) is GoalBlock) {
+			levelManager.win();
+		}
+	}
 }

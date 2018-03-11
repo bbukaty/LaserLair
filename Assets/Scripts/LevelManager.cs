@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class LevelManager : MonoBehaviour {
@@ -52,6 +53,10 @@ public class LevelManager : MonoBehaviour {
 			}
 		}
 	}
+
+	public void win() {
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+	}
 	
 	///<summary>
 	///Returns whether pos is a valid index into the level array. 
@@ -70,6 +75,14 @@ public class LevelManager : MonoBehaviour {
 	///</summary>
 	public Block getBlockIn(Vector3Int pos) {
 		return (isInBounds(pos)) ? level[pos[0], pos[1], pos[2]] : null;
+	}
+
+	///<summary>
+	///Returns the item 1 y-unit below pos in the level array or null if that is out of bounds.
+	///</summary>
+	public Block getBlockUnder(Vector3Int pos) {
+		Vector3Int under = pos + new Vector3Int(0,-1,0);
+		return (isInBounds(under)) ? level[under[0], under[1], under[2]] : null;
 	}
 
 	///<summary>
