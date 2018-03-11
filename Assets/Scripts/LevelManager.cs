@@ -77,19 +77,6 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	///<summary>
-	///Returns the item 1 y-unit below pos in the level array or null if that is out of bounds.
-	///</summary>
-	public Block getBlockUnder(Vector3Int pos) {
-		Vector3Int under = pos + new Vector3Int(0,-1,0);
-		return (isInBounds(under)) ? level[under[0], under[1], under[2]] : null;
-	}
-
-	public Block getBlockAbove(Vector3Int pos) {
-		Vector3Int above = pos + new Vector3Int(0,1,0);
-		return (isInBounds(above)) ? level[above[0], above[1], above[2]] : null;
-	}
-
-	///<summary>
 	///Try to push the block at pos in the movement direction, propogates push through other blocks.
 	///Returns whether push was successful. 
 	///</summary>

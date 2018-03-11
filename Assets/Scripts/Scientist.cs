@@ -10,7 +10,7 @@ public class Scientist: Character {
 
 	protected override void getMoveConsequences() {
 		base.getMoveConsequences();
-		if (levelManager.getBlockUnder(levelPos) is GoalBlock) {
+		if (levelManager.getBlockIn(levelPos + Vector3Int.down) is GoalBlock) {
 			levelManager.win();
 		}
 	}
