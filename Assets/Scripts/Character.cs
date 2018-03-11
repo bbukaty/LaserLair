@@ -34,8 +34,17 @@ public class Character: CubeObject {
 			applyInput(new Vector3Int(0, 0, 1));
 		} else if (Input.GetButtonDown ("Down")) {
 			applyInput(new Vector3Int(0, 0, -1));
-		} else if (Input.GetButtonDown("Grab") && !modelIsMoving()) {
-			tryGrab();
+		} else if (Input.GetButtonDown("Grab") && canGrab && !modelIsMoving()) {
+			toggleGrab();
+		}
+	}
+
+	private void toggleGrab() {
+		if (isGrabbing) {
+			isGrabbing = false;
+		} else if (levelManager.getBlockIn(levelPos + orientation) != null) {
+			// toggle grab animation
+			isGrabbing = true;
 		}
 	}
 
@@ -81,24 +90,22 @@ public class Character: CubeObject {
         if (levelManager.isInLaser(levelPos)) {
 			die();
 		} else if (levelManager.getBlockIn(levelPos + new Vector3Int(0,-1,0)) == null) {
-			GetComponent<Rigidbody>().useGravity = true;
-			Destroy(gameObject, 5);
+			// no block underneath current pos
+			fall();
 		}
     }
+	
 
 	protected virtual void die() {
 		return;
 	}
 
-	private void tryGrab() {
-		if (!canGrab) {
-			return;
-		}
-		if (isGrabbing) {
-			isGrabbing = false;
-		} else if (levelManager.getBlockIn(levelPos + orientation) != null) {
-			// toggle grab animation
-			isGrabbing = true;
-		}
+	private void fall() {
+		// remove character component in the meantime so they can't move while falling
+		Destroy(this);
+		Destroy(gameObject, 5);
+		Rigidbody body = GetComponent<Rigidbody>();
+		body.useGravity = true;
+		body.isKinematic = false;
 	}
 }

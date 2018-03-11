@@ -23,9 +23,9 @@ GameObject:
   - component: {fileID: 136207176400119098}
   - component: {fileID: 23183722631706330}
   - component: {fileID: 54168974321334460}
-  - component: {fileID: 114303621741441284}
+  - component: {fileID: 114949143001149384}
   m_Layer: 0
-  m_Name: ExplodeRobot
+  m_Name: invuln
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 92eed1a4593921c469f2f7f32ef8660a, type: 2}
+  - {fileID: 2100000, guid: 8946467bbcd3a3549af7d1d20d5ac564, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,7 +156,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 92eed1a4593921c469f2f7f32ef8660a, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -190,7 +190,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 92eed1a4593921c469f2f7f32ef8660a, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -246,7 +246,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114303621741441284
+--- !u!114 &114949143001149384
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1085961873357964}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d37f4a5b87c4f4d249423a681c7704d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 399490e656689934ab8c56c7624af5f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
