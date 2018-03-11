@@ -7,13 +7,12 @@ public class ExplodeRobot : Robot {
 	protected override void getMoveConsequences() {
 		if (levelManager.isInLaser(levelPos)) {
 			Debug.Log("Robot died in laser");
-			// Destroy robot and leave corpse object in its place, parented to level manager
-			for (int x = -1; x < 2; x++){
-				for (int y = -1; y < 2; y++){
-					for (int z = -1; z < 2; z++) {
+			for (int x = -1; x <= 1; x++){
+				for (int y = -1; y <= 1; y++){
+					for (int z = -1; z <= 1; z++) {
 						Vector3Int newPos = levelPos + new Vector3Int(x,y,z);
-//						Debug.Log(levelManager.getBlockIn(pos));
-						removeBlock(newPos);
+						// Debug.Log(levelManager.getBlockIn(pos));
+						levelManager.explodeBlock(newPos);
 					}
 				}
 			}

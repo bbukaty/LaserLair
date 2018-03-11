@@ -145,12 +145,10 @@ public class LevelManager : MonoBehaviour {
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}
 
-	public void removeBlock(Vector3Int pos){
-		Block block = levelManager.getBlockIn(pos);
-		if (block != null){
-			if (block.isDestructible) {
-				Destroy(block);
-			}
+	public void explodeBlock(Vector3Int pos){
+		Block toExplode = getBlockIn(pos);  
+		if (toExplode != null && toExplode.isDestructible) {
+			Destroy(toExplode.gameObject);
 		}
 	}
 }
