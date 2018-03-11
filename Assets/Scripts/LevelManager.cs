@@ -80,7 +80,7 @@ public class LevelManager : MonoBehaviour {
 	///Try to push the block at pos in the movement direction, propogates push through other blocks.
 	///Returns whether push was successful. 
 	///</summary>
-	public bool tryPush(Vector3Int pos, Vector3Int movement, bool justChecking = true) {
+	public bool tryPush(Vector3Int pos, Vector3Int movement, bool justChecking = false) {
 		bool canPush = false;
 		Block blockToPush = getBlockIn(pos);
 		Vector3Int adjacentPos = pos + movement;
@@ -154,36 +154,29 @@ public class LevelManager : MonoBehaviour {
 			for (int i = 0; i < 3; i++) {
 				Vector3Int searchOrientation = new Vector3Int(0, 0, 0);
 				searchOrientation[i] = sign;
-				explodeDirection(searchOrientation, pos);
+				explodeInDirection(searchOrientation, pos);
 			}
 		}
 	}
 
-	public void explodeDirection(Vector3Int direction, Vector3Int pos) {
+	private void explodeInDirection(Vector3Int direction, Vector3Int pos) {
 		Vector3Int adjacentPos = pos + direction;
 		if (!isInBounds(adjacentPos)) {
 			return;
 		}
-		if (getBlockIn(adjacentPos) == null) {
+		Block occupant = getBlockIn(adjacentPos);
+		if (occupant == null) {
 			// play explode animation on empty block, continue
-			explodeDirection(direction, adjacentPos);
-		} else if (tryExplodeBlock(adjacentPos)) {
-			// adjacent pos block was destructible, continue
-			explodeDirection(direction, adjacentPos);
+			explodeInDirection(direction, adjacentPos);
+		} else if (occupant.isDestructible) {
+			// play explode animation on occupant
+			Destroy(occupant.gameObject);
+			explodeInDirection(direction, adjacentPos);
 			// return; // if you want to only blow up one block in a direction
 		} else {
 			// there's a non-laser block in the way of any potential beams in this direction
 			return;
 		}
-	}
-
-	public bool tryExplodeBlock(Vector3Int pos){
-		Block toExplode = getBlockIn(pos);  
-		if (toExplode != null && toExplode.isDestructible) {
-			Destroy(toExplode.gameObject);
-			return true;
-		}
-		return false;
 	}
 }
 

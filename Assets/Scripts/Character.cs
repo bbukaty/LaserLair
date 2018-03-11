@@ -60,8 +60,6 @@ public class Character: CubeObject {
 					tryMove(movement);
 				}
 			} else {
-				Debug.Log("levelPos:" + levelPos.ToString());
-				Debug.Log("blockIn pos + mov: " + levelManager.getBlockIn(levelPos + movement));
 				if (levelManager.getBlockIn(levelPos + movement) == null) {
 					tryMove(movement);
 				} else {
