@@ -23,9 +23,9 @@ GameObject:
   - component: {fileID: 136207176400119098}
   - component: {fileID: 23183722631706330}
   - component: {fileID: 54168974321334460}
-  - component: {fileID: 114303621741441284}
+  - component: {fileID: 114392977655599164}
   m_Layer: 0
-  m_Name: ExplodeRobot
+  m_Name: BlockRobot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,7 +246,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114303621741441284
+--- !u!114 &114392977655599164
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -254,12 +254,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1085961873357964}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d37f4a5b87c4f4d249423a681c7704d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b350e2e4616145428fe6e25f7f179a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
-  corpsePrefab: {fileID: 0}
+  corpsePrefab: {fileID: 4068319142064594, guid: ee217f393bb542a42a86bff519e6ed11,
+    type: 2}
   canGrab: 1
 --- !u!136 &136207176400119098
 CapsuleCollider:

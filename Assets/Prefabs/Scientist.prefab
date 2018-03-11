@@ -89,9 +89,9 @@ GameObject:
   - component: {fileID: 4484748619337876}
   - component: {fileID: 95888634271260922}
   - component: {fileID: 54132360496820124}
-  - component: {fileID: 114134205688363984}
+  - component: {fileID: 114604148623343726}
   m_Layer: 0
-  m_Name: scientistPrefab
+  m_Name: Scientist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -434,7 +434,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114134205688363984
+--- !u!114 &114604148623343726
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -442,9 +442,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1979681114131202}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b350e2e4616145428fe6e25f7f179a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 67a3737956373854389c16ab063ff08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
-  corpsePrefab: {fileID: 4022469652345426, guid: c3ee271e968b11244b2db41aace56d71,
-    type: 2}
+  levelPos: {x: 0, y: 0, z: 0}
+  corpsePrefab: {fileID: 0}
+  canGrab: 1

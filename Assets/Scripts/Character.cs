@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Robot: CubeObject {
+public class Character: CubeObject {
 
 	public Transform corpsePrefab;
+	public bool canGrab;
 
     protected LevelManager levelManager;
 	protected bool isGrabbing;
 
     bool modelIsMoving() {
-		Rigidbody body = transform.GetComponentInChildren<Rigidbody>();
+		Rigidbody body = transform.GetComponent<Rigidbody>();
 		return body.angularVelocity.magnitude == 0 && body.velocity.magnitude != 0;
 	}
 
@@ -43,11 +44,11 @@ public class Robot: CubeObject {
 			return;
 		}
 		if (movement == orientation) {
-			movePlayer(movement);
+			moveCharacter(movement);
 		} else if (movement == orientation * -1) {
-			bool moved = movePlayer(movement); 
+			bool moved = moveCharacter(movement); 
 			if (isGrabbing && moved) {
-				// pull grabbed block backwards, *2 because we just moved 1 more away from the block to pull
+				// pull grabbed block backwards, orientation*2 because we just moved 1 more away from the block to pull
 				isGrabbing = levelManager.tryPush(levelPos + orientation*2, movement);
 				// set isGrabbing to whether could push, so that if you try to pull heavy you stop grabbing
 			}
@@ -58,7 +59,7 @@ public class Robot: CubeObject {
 		}
 	}
 
-	private bool movePlayer(Vector3Int movement) {
+	private bool moveCharacter(Vector3Int movement) {
 		Debug.Log("moving: " + movement.ToString());
 		Vector3Int newPos = levelPos + movement;
 		if (!levelManager.isInBounds(newPos)) {
@@ -66,12 +67,6 @@ public class Robot: CubeObject {
 		}
 		Block occupant = levelManager.getBlockIn(newPos);
 		if (occupant == null || levelManager.tryPush(newPos, movement)) {
-			/* maybe check if there's solid ground there first
-			int[] belowNewPos = (int[])newPos.Clone();
-			if (levelManager.getBlockIn(belowNewPos) != null) {
-				// move
-			}
-			*/
 			levelPos = newPos;
 			moveModel(movement);
 			getMoveConsequences();
@@ -82,11 +77,28 @@ public class Robot: CubeObject {
 		}
 	}
 
-    protected virtual void getMoveConsequences() {
-        return;
+    private void getMoveConsequences() {
+        if (levelManager.isInLaser(levelPos)) {
+			die();
+		} else if (levelManager.getBlockIn(levelPos + new Vector3Int(0,-1,0)) == null) {
+			GetComponent<Rigidbody>().useGravity = true;
+			Destroy(gameObject, 5);
+		}
     }
 
-	protected virtual void tryGrab() {
+	protected virtual void die() {
 		return;
+	}
+
+	private void tryGrab() {
+		if (!canGrab) {
+			return;
+		}
+		if (isGrabbing) {
+			isGrabbing = false;
+		} else if (levelManager.getBlockIn(levelPos + orientation) != null) {
+			// toggle grab animation
+			isGrabbing = true;
+		}
 	}
 }
