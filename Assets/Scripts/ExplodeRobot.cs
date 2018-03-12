@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ExplodeRobot : Character {
 
-	protected override void die() {
+	public override void die() {
 		// Debug.Log("Robot died in laser");
 		// for (int x = -1; x <= 1; x++){
 		// 	for (int y = -1; y <= 1; y++){

@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class Scientist: Character {
 
-	protected override void die() {
-		Destroy(gameObject);
-	}
-
 	protected override void getMoveConsequences() {
 		base.getMoveConsequences();
-		if (levelManager.getBlockIn(levelPos + Vector3Int.down) is GoalBlock) {
+		if (levelManager.getCubeObjIn(levelPos + Vector3Int.down) is GoalBlock) {
 			levelManager.win();
 		}
 	}
