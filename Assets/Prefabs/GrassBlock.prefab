@@ -125,5 +125,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
-  isPushable: 1
-  isDestructible: 1
+  isMovable: 1
+  diesToExplosion: 1
+  diesToLaser: 0

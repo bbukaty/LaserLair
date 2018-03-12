@@ -259,6 +259,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
+  isMovable: 1
+  diesToExplosion: 1
+  diesToLaser: 1
   corpsePrefab: {fileID: 4068319142064594, guid: ee217f393bb542a42a86bff519e6ed11,
     type: 2}
   canGrab: 1
