@@ -83,7 +83,7 @@ public class CubeObject: MonoBehaviour {
 		if (diesToLaser && levelManager.isInLaser(levelPos)) {
 			die();
 		}
-		tryFall();
+		//tryFall();
     }
 
     public virtual void die() {

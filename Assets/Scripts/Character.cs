@@ -42,23 +42,37 @@ public class Character: CubeObject {
 			return;
 		}
 		Debug.Log("moving: " + movement.ToString());
-		CubeObject grabbingBlock = levelManager.getCubeObjIn(levelPos + orientation);
+		CubeObject facingBlock = levelManager.getCubeObjIn(levelPos + orientation);
 		if (movement == orientation) {
-			if (grabbingBlock != null && !isGrabbing) {
-				tryJump(movement);
+			// if (grabbingBlock != null && !isGrabbing) {
+			// 	tryJump(movement);
+			// } else {
+			// 	tryMove(movement);
+			// }
+			if (isGrabbing) {
+				tryMove(movement);
+			} else if (facingBlock != null) {
+				Debug.Log("block in front, not grabbing - tryJump");
 			} else {
 				tryMove(movement);
 			}
 		} else if (movement == orientation * -1) {
+			// if (isGrabbing) {
+			// 	grabbingBlock.tryMove(movement);
+			// } else {
+			// 	CubeObject blockInFront = levelManager.getCubeObjIn(levelPos + movement);
+			// 	if (blockInFront != null) {
+			// 		tryJump(movement);
+			// 	} else {
+			// 		tryMove(movement);
+			// 	}
+			// }
 			if (isGrabbing) {
-				grabbingBlock.tryMove(movement);
+				Debug.Log("pulling block backwards");
+				facingBlock.tryMove(movement);
 			} else {
-				CubeObject blockInFront = levelManager.getCubeObjIn(levelPos + movement);
-				if (blockInFront != null) {
-					tryJump(movement);
-				} else {
-					tryMove(movement);
-				}
+				//can't jump up if not facing it
+				tryMove(movement);
 			}
 		} else { // movement axis doesn't align with current orientation
 			// drop grabbed block

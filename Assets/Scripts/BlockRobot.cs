@@ -8,7 +8,7 @@ public class BlockRobot: Character {
 		Debug.Log("Robot died in laser");
 		// Destroy robot and leave corpse object in its place, parented to level manager
 		Transform corpse = Instantiate(corpsePrefab, levelPos, Quaternion.identity, levelManager.transform);
-		levelManager.addBlock(corpse.GetComponent<Block>());
+		levelManager.addBlock(corpse.GetComponent<CubeObject>());
 		Destroy(gameObject);
 	}
 
