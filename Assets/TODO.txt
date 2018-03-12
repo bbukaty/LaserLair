@@ -1,7 +1,6 @@
 main menu/level select
 game over screen
 UI robot icons
-interactions with explosive blocks/explodeBot corpses
 
 explode robot - explosion tilts blocks in radius? (only pushable blocks)
 spawn assets/animation, drop from ceiling? dispenser? scientis pulls out, then grows?
@@ -10,4 +9,6 @@ laser redirection bot - line renderer component same as laser block, but enable/
 
 
 
+interactions with explosive blocks/explodeBot corpses
+interactions with pushing stacked blocks and falling stacks
 interactions between falling and lasers

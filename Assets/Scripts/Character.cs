@@ -42,17 +42,22 @@ public class Character: CubeObject {
 			return;
 		}
 		Debug.Log("moving: " + movement.ToString());
-		if (movement == orientation || movement == orientation * -1) {
-			if (isGrabbing) {
-				CubeObject grabbedBlock = levelManager.getCubeObjIn(levelPos + orientation);
-				if (tryMove(movement, justChecking: true) && grabbedBlock.tryMove(movement)) {
-					tryMove(movement);
-				}
+		CubeObject grabbingBlock = levelManager.getCubeObjIn(levelPos + orientation);
+		if (movement == orientation) {
+			if (grabbingBlock != null && !isGrabbing) {
+				tryJump(movement);
 			} else {
-				if (levelManager.getCubeObjIn(levelPos + movement) == null) {
-					tryMove(movement);
-				} else {
+				tryMove(movement);
+			}
+		} else if (movement == orientation * -1) {
+			if (isGrabbing) {
+				grabbingBlock.tryMove(movement);
+			} else {
+				CubeObject blockInFront = levelManager.getCubeObjIn(levelPos + movement);
+				if (blockInFront != null) {
 					tryJump(movement);
+				} else {
+					tryMove(movement);
 				}
 			}
 		} else { // movement axis doesn't align with current orientation

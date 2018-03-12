@@ -13,10 +13,17 @@ public class Spawner : MonoBehaviour {
 	public FollowCamera playerCam;
 
 	private Transform currPlayer;
+	private Transform levelManager;
 	
-	void Start() {
+
+	void Awake() {
+		levelManager = GameObject.Find("LevelManager").transform;
+		Debug.Assert(levelManager != null, "Warning: Level Manager script not found in scene!");
 		Debug.Assert(robotPrefabs.Length == buttonSprites.Length, "Warning: Spawner prefabs and sprites lists don't match!");
 		currPlayer = null;
+	}
+
+	void Start() {
 		// create a UI spawn button for each robot prefab
 		for (int i = 0; i < robotPrefabs.Length; i++) {
 			Transform buttonTransform = Instantiate(buttonPrefab, buttonPanel);
@@ -29,7 +36,8 @@ public class Spawner : MonoBehaviour {
 	public void spawn(Transform robotPrefab) {
 		// Reminder: if the previous player died or was deactivated, its gameObject was destroyed and replaced.
 		if (currPlayer == null) {
-			currPlayer = Instantiate(robotPrefab, spawnLoc, Quaternion.identity);
+			currPlayer = Instantiate(robotPrefab, spawnLoc, Quaternion.identity, levelManager);
+			levelManager.GetComponent<LevelManager>().addBlock(currPlayer.GetComponent<CubeObject>());
 			playerCam.follow(currPlayer);
 		}
 	}
