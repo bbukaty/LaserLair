@@ -20,10 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4022469652345426}
   - component: {fileID: 33372041826461472}
+  - component: {fileID: 65019481010663006}
   - component: {fileID: 23826056617882914}
   - component: {fileID: 54645581075573788}
   - component: {fileID: 114305532264811700}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GlassBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,6 +100,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65019481010663006
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294912835850980}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114305532264811700
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -112,5 +125,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
-  isPushable: 0
-  isDestructible: 0
+  isMovable: 0
+  diesToExplosion: 0
+  diesToLaser: 0

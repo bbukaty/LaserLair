@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Scientist: Character {
 
-	protected override void getMoveConsequences() {
+	public override void getMoveConsequences() {
 		base.getMoveConsequences();
 		if (levelManager.getCubeObjIn(levelPos + Vector3Int.down) is GoalBlock) {
 			levelManager.win();

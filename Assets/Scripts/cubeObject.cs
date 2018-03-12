@@ -18,7 +18,7 @@ public class CubeObject: MonoBehaviour {
 		Debug.Assert(levelManager != null, "Warning: Level Manager script not found in scene!");
         initOrientation();
 		initLevelPos();
-        initStateVars();
+        initStateVars(); // right now all this does is set isGrabbing to false for Characters
 	}
 
     protected void initLevelPos() {
@@ -43,11 +43,13 @@ public class CubeObject: MonoBehaviour {
 		return body.angularVelocity.magnitude == 0 && body.velocity.magnitude != 0;
 	}
 
-    public void moveModel(Vector3Int movement) {
+    protected void updatePos(Vector3Int movement) {
+        levelManager.moveBlock(levelPos, levelPos + movement);
+        levelPos += movement;
         transform.Translate(movement, Space.World);
     }
 
-    public void rotateModelTo(Vector3Int direction) {
+    public void updateOrientation(Vector3Int direction) {
 		transform.forward = direction;
 		orientation = direction;
 	}
@@ -71,19 +73,17 @@ public class CubeObject: MonoBehaviour {
         }
         if (canMove && !justChecking) {
             // update position in level manager and in internal levelPos var
-            levelManager.moveBlock(levelPos, levelPos + movement);
-            levelPos += movement;
-			moveModel(movement);
+            updatePos(movement);
             getMoveConsequences();
 		}
         return canMove;
     }
 
-    protected virtual void getMoveConsequences() {
+    public virtual void getMoveConsequences() {
 		if (diesToLaser && levelManager.isInLaser(levelPos)) {
 			die();
 		}
-		//tryFall();
+		tryFall();
     }
 
     public virtual void die() {
@@ -95,14 +95,13 @@ public class CubeObject: MonoBehaviour {
 		if (!levelManager.isInBounds(below)) {
             //TODO: trigger this for all cubeObjects above this immediately
 			// fall out of level, remove character component while falling so they can't move
-			Destroy(this);
-			Destroy(gameObject, 2);
 			Rigidbody body = GetComponent<Rigidbody>();
 			body.useGravity = true;
 			body.isKinematic = false;
+			Destroy(gameObject, 2);
+			Destroy(this);
 		} else if (levelManager.getCubeObjIn(below) == null) {
-			levelPos = below;
-			moveModel(Vector3Int.down);
+			updatePos(Vector3Int.down);
 			getMoveConsequences();
 		}
 	}

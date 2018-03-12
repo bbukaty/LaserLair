@@ -44,47 +44,32 @@ public class Character: CubeObject {
 		Debug.Log("moving: " + movement.ToString());
 		CubeObject facingBlock = levelManager.getCubeObjIn(levelPos + orientation);
 		if (movement == orientation) {
-			// if (grabbingBlock != null && !isGrabbing) {
-			// 	tryJump(movement);
-			// } else {
-			// 	tryMove(movement);
-			// }
 			if (isGrabbing) {
 				tryMove(movement);
 			} else if (facingBlock != null) {
-				Debug.Log("block in front, not grabbing - tryJump");
+				tryJump(movement);
 			} else {
 				tryMove(movement);
 			}
 		} else if (movement == orientation * -1) {
-			// if (isGrabbing) {
-			// 	grabbingBlock.tryMove(movement);
-			// } else {
-			// 	CubeObject blockInFront = levelManager.getCubeObjIn(levelPos + movement);
-			// 	if (blockInFront != null) {
-			// 		tryJump(movement);
-			// 	} else {
-			// 		tryMove(movement);
-			// 	}
-			// }
+			//can't jump up backwards
 			if (isGrabbing) {
 				Debug.Log("pulling block backwards");
 				facingBlock.tryMove(movement);
 			} else {
-				//can't jump up if not facing it
 				tryMove(movement);
 			}
 		} else { // movement axis doesn't align with current orientation
 			// drop grabbed block
 			isGrabbing = false;
-			rotateModelTo(movement);
+			updateOrientation(movement);
 		}
 	}
 	
 	protected virtual void tryJump(Vector3Int movement) {
-		if (levelManager.getCubeObjIn(levelPos + movement + Vector3Int.up) == null) {
-			levelPos += movement + Vector3Int.up;
-			moveModel(movement + Vector3Int.up);
+		Vector3Int newPos = levelPos + movement + Vector3Int.up;
+		if (levelManager.getCubeObjIn(newPos) == null) {
+			updatePos(movement + Vector3Int.up);
 			getMoveConsequences();
 		}
 	}
