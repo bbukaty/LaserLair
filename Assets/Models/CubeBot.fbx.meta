@@ -1,43 +1,24 @@
 fileFormatVersion: 2
-guid: 803d55d3c9a986e46bf86dd6f48e3ef8
-timeCreated: 1520317526
+guid: ed6cca58d9fed2849b63611b3022361b
+timeCreated: 1520833679
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: body
-    100002: body_001
-    100004: glasses
-    100006: hair
-    100008: head
-    100010: //RootNode
-    400000: body
-    400002: body_001
-    400004: glasses
-    400006: hair
-    400008: head
-    400010: //RootNode
-    2100000: unnamed
-    2100002: Material_001
-    2100004: Material
-    2100006: Material_003
-    2300000: body
-    2300002: body_001
-    2300004: glasses
-    2300006: hair
-    2300008: head
-    3300000: body
-    3300002: body_001
-    3300004: glasses
-    3300006: hair
-    3300008: head
-    4300000: glasses
-    4300002: hair
-    4300004: head
-    4300006: body
-    4300008: body_001
-    7400000: Default Take
-    9500000: //RootNode
+    100000: Camera
+    100002: Cube
+    100004: //RootNode
+    100006: Lamp
+    400000: Camera
+    400002: Cube
+    400004: //RootNode
+    400006: Lamp
+    2000000: Camera
+    2100000: Material
+    2300000: Cube
+    3300000: Cube
+    4300000: Cube
+    10800000: Lamp
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -68,13 +49,13 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.1
+    globalScale: 0.31
     meshCompression: 0
     addColliders: 0
-    importVisibility: 1
+    importVisibility: 0
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -112,7 +93,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
