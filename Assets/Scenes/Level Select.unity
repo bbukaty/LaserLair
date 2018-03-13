@@ -593,7 +593,7 @@ GameObject:
   - component: {fileID: 1559659963}
   - component: {fileID: 1559659964}
   m_Layer: 0
-  m_Name: LevelManager
+  m_Name: LevelSelector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -631,6 +631,9 @@ MonoBehaviour:
     UnLocked: 0
     isInteractable: 1
   - LevelText: 2
+    UnLocked: 0
+    isInteractable: 1
+  - LevelText: 3
     UnLocked: 0
     isInteractable: 1
 --- !u!1 &1784699116
