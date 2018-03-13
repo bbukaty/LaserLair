@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4007361617841082}
   - component: {fileID: 54948260011764372}
   - component: {fileID: 114296136362928794}
+  - component: {fileID: 114528100505954036}
   m_Layer: 0
   m_Name: ScientistPrefab
   m_TagString: Untagged
@@ -1211,11 +1212,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
+  corpsePrefab: {fileID: 0}
   isMovable: 1
   diesToExplosion: 1
   diesToLaser: 1
-  corpsePrefab: {fileID: 0}
+--- !u!114 &114528100505954036
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1002791691503274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 399490e656689934ab8c56c7624af5f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   canGrab: 1
+  canJump: 0
 --- !u!137 &137725741721727072
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

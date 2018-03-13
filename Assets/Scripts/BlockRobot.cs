@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockRobot: Character {
+public class BlockRobot: CubeObject {
 
 	public override void die() {
 		Debug.Log("Robot died in laser");

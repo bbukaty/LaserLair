@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65475708363141900}
   - component: {fileID: 23344281420419872}
   - component: {fileID: 54192830026340394}
-  - component: {fileID: 114827872247493406}
+  - component: {fileID: 114433009605043308}
   m_Layer: 0
   m_Name: staticBlock
   m_TagString: Untagged
@@ -37,13 +37,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1656541258088184}
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 5.7347255, y: 1.0000001, z: 3.1645775}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.0000005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23344281420419872
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -58,7 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: d11bae49e3e1e344aa25eb0149d7a534, type: 2}
+  - {fileID: 2100000, guid: 79be30d1f61e62f4bb33f92dbc1e9a0c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 0
@@ -84,7 +84,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1656541258088184}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 15daa4123c83f614288968f67b7e6098, type: 3}
 --- !u!54 &54192830026340394
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -112,7 +112,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114827872247493406
+--- !u!114 &114433009605043308
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -120,10 +120,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1656541258088184}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ec2498d75e2c684dbff29fca4554de0, type: 3}
+  m_Script: {fileID: 11500000, guid: a03bc5dc0b3f83a48950c37ff000b7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
-  isPushable: 0
-  isDestructible: 0
+  corpsePrefab: {fileID: 0}
+  isMovable: 0
+  diesToExplosion: 0
+  diesToLaser: 0

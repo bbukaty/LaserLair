@@ -632,7 +632,7 @@ MonoBehaviour:
     isInteractable: 1
   - LevelText: 2
     UnLocked: 0
-    isInteractable: 0
+    isInteractable: 1
 --- !u!1 &1784699116
 GameObject:
   m_ObjectHideFlags: 0
