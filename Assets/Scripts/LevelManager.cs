@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour {
 
+	public GameObject explosionAnimation;
 	private CubeObject[,,] level;
 
 	void Start() {
@@ -145,18 +146,18 @@ public class LevelManager : MonoBehaviour {
 	private void explodePos(Vector3Int pos) {
 		CubeObject occupant = getCubeObjIn(pos);
 		if (occupant == null) {
-			explodeAnimation(pos);
+			animateExplosion(pos);
 		} else {
 			if (occupant.diesToExplosion) {
-				explodeAnimation(pos);
+				animateExplosion(pos);
 				occupant.die();
 			}
 		}
 	}
 
-	private void explodeAnimation(Vector3Int pos) {
-		GameObject explosion = Instantiate((GameObject)Resources.Load("Fire_Explosion_01"), pos, Quaternion.Euler(0, 0, 0));
-	 	Destroy(explosion, 1.2f);
+	private void animateExplosion(Vector3Int pos) {
+		GameObject explosion = Instantiate(explosionAnimation, pos, Quaternion.identity);
+	 	Destroy(explosion, .5f);
 	}
 }
 
