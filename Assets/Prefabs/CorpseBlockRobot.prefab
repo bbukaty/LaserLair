@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 136207176400119098}
   - component: {fileID: 23183722631706330}
   - component: {fileID: 54168974321334460}
-  - component: {fileID: 114800462700547576}
+  - component: {fileID: 114283418803659632}
   m_Layer: 0
   m_Name: CorpseBlockRobot
   m_TagString: Untagged
@@ -246,7 +246,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114800462700547576
+--- !u!114 &114283418803659632
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -254,11 +254,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1085961873357964}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ec2498d75e2c684dbff29fca4554de0, type: 3}
+  m_Script: {fileID: 11500000, guid: d2773df38a3db31499dd68457212a982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
+  corpsePrefab: {fileID: 0}
   isMovable: 1
   diesToExplosion: 1
   diesToLaser: 0
