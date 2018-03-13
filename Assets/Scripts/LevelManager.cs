@@ -79,7 +79,6 @@ public class LevelManager : MonoBehaviour {
 
 	public void addBlock(CubeObject blockToAdd) {
 		Vector3Int pos = blockToAdd.levelPos;
-		Debug.Assert(level[pos.x, pos.y, pos.z] == null, "Warning: Adding block into an occupied position in the level!");
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}
 
