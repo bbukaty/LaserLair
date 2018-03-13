@@ -226,7 +226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
-  corpsePrefab: {fileID: 4068319142064594, guid: ee217f393bb542a42a86bff519e6ed11,
+  corpsePrefab: {fileID: 4687372365808450, guid: ee217f393bb542a42a86bff519e6ed11,
     type: 2}
   isMovable: 1
   diesToExplosion: 1

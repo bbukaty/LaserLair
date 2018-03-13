@@ -125,6 +125,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public void explodeOutwards(Vector3Int pos) {
+		animateExplosion(pos);
 		for (int sign = -1; sign <= 1; sign += 2) {
 			for (int i = 0; i < 3; i++) {
 				Vector3Int searchOrientation = new Vector3Int(0, 0, 0);
@@ -155,7 +156,7 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	private void animateExplosion(Vector3Int pos) {
+	public void animateExplosion(Vector3Int pos) {
 		GameObject explosion = Instantiate(explosionAnimation, pos, Quaternion.identity);
 	 	Destroy(explosion, .5f);
 	}
