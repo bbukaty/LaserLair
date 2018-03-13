@@ -155,7 +155,8 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private void explodeAnimation(Vector3Int pos) {
-		return;
+		GameObject explosion = Instantiate((GameObject)Resources.Load("Fire_Explosion_01"), pos, Quaternion.Euler(0, 0, 0));
+	 	Destroy(explosion, 1.2f);
 	}
 }
 
