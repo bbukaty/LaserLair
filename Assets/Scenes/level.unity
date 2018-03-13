@@ -372,8 +372,8 @@ Camera:
   m_GameObject: {fileID: 65322767}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.7058823, g: 0.261, b: 0.40484428, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -1746,12 +1746,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d66d57bca45324d9b37d6a36e52475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  robotButton: {fileID: 224694288127943604, guid: 670cb6484e59ebf41afe5c200ecbe391,
-    type: 2}
+  buttonPrefab: {fileID: 0}
+  buttonPanel: {fileID: 0}
   robotPrefabs:
-  - {fileID: 4484748619337876, guid: d9662dbfbd6f82b47b6c862a659beb97, type: 2}
-  - {fileID: 4068319142064594, guid: b59d101d34d0ecd46a448c6d22f9ed5d, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  buttonSprites: []
   spawnLoc: {x: 5, y: 1, z: 1}
+  playerCam: {fileID: 0}
 --- !u!114 &823185679
 MonoBehaviour:
   m_ObjectHideFlags: 0
