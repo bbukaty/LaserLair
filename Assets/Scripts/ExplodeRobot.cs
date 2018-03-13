@@ -15,7 +15,7 @@ public class ExplodeRobot : Character {
 		// 		}
 		// 	}
 		// }
-		levelManager.explodePos(levelPos);
+		levelManager.explodeOutwards(levelPos);
 		Destroy(gameObject);
 	}
 

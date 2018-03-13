@@ -123,7 +123,7 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	public void explodePos(Vector3Int pos) {
+	public void explodeOutwards(Vector3Int pos) {
 		for (int sign = -1; sign <= 1; sign += 2) {
 			for (int i = 0; i < 3; i++) {
 				Vector3Int searchOrientation = new Vector3Int(0, 0, 0);
@@ -138,19 +138,24 @@ public class LevelManager : MonoBehaviour {
 		if (!isInBounds(adjacentPos)) {
 			return;
 		}
-		CubeObject occupant = getCubeObjIn(adjacentPos);
+		explodePos(adjacentPos);
+		explodeInDirection(direction, adjacentPos);
+	}
+
+	private void explodePos(Vector3Int pos) {
+		CubeObject occupant = getCubeObjIn(pos);
 		if (occupant == null) {
-			// play explode animation on empty block, continue
-			explodeInDirection(direction, adjacentPos);
+			explodeAnimation(pos);
 		} else {
-			// play explode animation on occupant
 			if (occupant.diesToExplosion) {
+				explodeAnimation(pos);
 				occupant.die();
 			}
-			explodeInDirection(direction, adjacentPos);
-			// return; // if you want to only blow up one block in a direction
-			return;
 		}
+	}
+
+	private void explodeAnimation(Vector3Int pos) {
+		return;
 	}
 }
 
