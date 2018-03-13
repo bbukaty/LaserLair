@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 4355906219860550}
   - component: {fileID: 54287709210420798}
   - component: {fileID: 114201513650281050}
+  - component: {fileID: 114771744571529226}
   m_Layer: 0
   m_Name: BlockRobotPrefab
   m_TagString: Untagged
@@ -207,9 +208,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
+  corpsePrefab: {fileID: 4068319142064594, guid: ee217f393bb542a42a86bff519e6ed11,
+    type: 2}
   isMovable: 1
   diesToExplosion: 1
   diesToLaser: 1
-  corpsePrefab: {fileID: 4068319142064594, guid: ee217f393bb542a42a86bff519e6ed11,
-    type: 2}
+--- !u!114 &114771744571529226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1397040535282602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 399490e656689934ab8c56c7624af5f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   canGrab: 1
+  canJump: 1

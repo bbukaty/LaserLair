@@ -2,14 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character: CubeObject {
+public class Character: MonoBehaviour {
 
-	public Transform corpsePrefab;
 	public bool canGrab;
+	public bool canJump; 
 
-	protected bool isGrabbing;
+	private bool isGrabbing;
+    private LevelManager levelManager;
+	private CubeObject cubeObject;
 
-	protected override void initStateVars() {
+	void Awake() {
+		levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+		Debug.Assert(levelManager != null, "Warning: Level Manager script not found in scene!");
+		cubeObject = GetComponent<CubeObject>();
+		Debug.Assert(cubeObject != null, "Warning: Character initialized with no CubeObject attached!");
 		isGrabbing = false;
 	}
 
@@ -23,54 +29,58 @@ public class Character: CubeObject {
 			applyInput(new Vector3Int(0, 0, 1));
 		} else if (Input.GetButtonDown ("Down")) {
 			applyInput(new Vector3Int(0, 0, -1));
-		} else if (Input.GetButtonDown("Grab") && canGrab && !modelIsMoving()) {
-			toggleGrab();
+		} else if (Input.GetButtonDown("Grab") && canGrab) {
+			tryGrab();
 		}
 	}
 
-	private void toggleGrab() {
-		if (isGrabbing) {
+	private void tryGrab() {
+		if (cubeObject.modelIsMoving()) {
+			return;
+		} else if (isGrabbing) {
 			isGrabbing = false;
-		} else if (levelManager.getCubeObjIn(levelPos + orientation) != null) {
+		} else if (levelManager.getCubeObjIn(cubeObject.levelPos + cubeObject.orientation) != null) {
 			// toggle grab animation
 			isGrabbing = true;
 		}
 	}
 
     private void applyInput(Vector3Int movement) {
-		if (modelIsMoving()) {
+		if (cubeObject.modelIsMoving()) {
 			return;
 		}
 		Debug.Log("moving: " + movement.ToString());
-		CubeObject facingBlock = levelManager.getCubeObjIn(levelPos + orientation);
-		if (movement == orientation) {
+		CubeObject facingBlock = levelManager.getCubeObjIn(cubeObject.levelPos + cubeObject.orientation);
+		if (movement == cubeObject.orientation) {
 			if (isGrabbing) {
-				tryMove(movement);
+				cubeObject.push(movement);
 			} else if (facingBlock != null) {
 				tryJump(movement);
 			} else {
-				tryMove(movement);
+				cubeObject.push(movement);
 			}
-		} else if (movement == orientation * -1) {
+		} else if (movement == cubeObject.orientation * -1) {
 			//can't jump up backwards
 			if (isGrabbing) {
 				Debug.Log("pulling block backwards");
-				facingBlock.tryMove(movement);
+				facingBlock.push(movement);
 			} else {
-				tryMove(movement);
+				cubeObject.push(movement);
 			}
 		} else { // movement axis doesn't align with current orientation
 			// drop grabbed block
 			isGrabbing = false;
-			updateOrientation(movement);
+			cubeObject.updateOrientation(movement);
 		}
 	}
 	
 	protected virtual void tryJump(Vector3Int movement) {
-		Vector3Int newPos = levelPos + movement + Vector3Int.up;
+		if (!canJump) {
+			return;
+		}
+		Vector3Int newPos = cubeObject.levelPos + movement + Vector3Int.up;
 		if (levelManager.getCubeObjIn(newPos) == null) {
-			updatePos(movement + Vector3Int.up);
-			getMoveConsequences();
+			cubeObject.updatePos(movement + Vector3Int.up);
 		}
 	}
 }

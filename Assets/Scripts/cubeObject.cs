@@ -6,6 +6,7 @@ public class CubeObject: MonoBehaviour {
 
 	public Vector3Int orientation;
     public Vector3Int levelPos;
+    public Transform corpsePrefab;
     public bool isMovable;
     public bool diesToExplosion;
     public bool diesToLaser;
@@ -18,15 +19,14 @@ public class CubeObject: MonoBehaviour {
 		Debug.Assert(levelManager != null, "Warning: Level Manager script not found in scene!");
         initOrientation();
 		initLevelPos();
-        initStateVars(); // right now all this does is set isGrabbing to false for Characters
 	}
 
-    protected void initLevelPos() {
+    private void initLevelPos() {
         levelPos = Vector3Int.RoundToInt(transform.position);
         Debug.Assert((Vector3)levelPos == transform.position, "Warning: Improperly aligned object has been initialized!");
     }
 
-    protected void initOrientation() {
+    private void initOrientation() {
         orientation = new Vector3Int();
         for (int i = 0; i < 3; i++) {
             Debug.Assert(Mathf.Abs((float)(int)transform.forward[i] - transform.forward[i]) < 0.001, "Warning: Level contains improperly oriented cube!");
@@ -34,19 +34,16 @@ public class CubeObject: MonoBehaviour {
         }
     }
 
-    protected virtual void initStateVars() {
-        return;
-    }
-
-    protected bool modelIsMoving() {
+    public bool modelIsMoving() {
 		Rigidbody body = transform.GetComponent<Rigidbody>();
 		return body.angularVelocity.magnitude == 0 && body.velocity.magnitude != 0;
 	}
 
-    protected void updatePos(Vector3Int movement) {
+    public void updatePos(Vector3Int movement) {
         levelManager.moveBlock(levelPos, levelPos + movement);
         levelPos += movement;
         transform.Translate(movement, Space.World);
+        getMoveConsequences();
     }
 
     public void updateOrientation(Vector3Int direction) {
@@ -58,7 +55,7 @@ public class CubeObject: MonoBehaviour {
 	///Try to push this block in the movement direction, propogates push through other blocks.
 	///Returns whether push was successful. 
 	///</summary>
-    public bool tryMove(Vector3Int movement, bool justChecking = false) {
+    public bool push(Vector3Int movement, bool justChecking = false) {
         bool canMove = false;
         if (isMovable) {
             Vector3Int adjacentPos = levelPos + movement;
@@ -67,14 +64,13 @@ public class CubeObject: MonoBehaviour {
                 if (adjacentBlock == null) {
                     canMove = true;
                 } else {
-                    canMove = adjacentBlock.tryMove(movement, justChecking);
+                    canMove = adjacentBlock.push(movement, justChecking);
                 }
             }
         }
         if (canMove && !justChecking) {
             // update position in level manager and in internal levelPos var
             updatePos(movement);
-            getMoveConsequences();
 		}
         return canMove;
     }
@@ -102,7 +98,6 @@ public class CubeObject: MonoBehaviour {
 			Destroy(this);
 		} else if (levelManager.getCubeObjIn(below) == null) {
 			updatePos(Vector3Int.down);
-			getMoveConsequences();
 		}
 	}
 }
