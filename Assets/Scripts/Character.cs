@@ -74,12 +74,12 @@ public class Character: MonoBehaviour {
 		}
 	}
 	
-	protected virtual void tryJump(Vector3Int movement) {
+	private void tryJump(Vector3Int movement) {
 		if (!canJump) {
 			return;
 		}
 		Vector3Int newPos = cubeObject.levelPos + movement + Vector3Int.up;
-		if (levelManager.getCubeObjIn(newPos) == null) {
+		if (levelManager.isInBounds(newPos) && levelManager.getCubeObjIn(newPos) == null) {
 			cubeObject.updatePos(movement + Vector3Int.up);
 		}
 	}
