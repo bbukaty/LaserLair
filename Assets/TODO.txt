@@ -11,3 +11,5 @@ laser redirection bot - line renderer component same as laser block, but enable/
 interactions with pushing stacked blocks and falling stacks - push grabbed block over edge
 when a block is exploded, check if things are on top and add them to movedBlocks to be iteratively fallen
 when something is blown up, recompute lasers to see if they can hit something new
+
+jumping with block on head - probably negligible

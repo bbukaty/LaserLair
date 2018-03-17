@@ -8,6 +8,11 @@ public class LevelManager : MonoBehaviour {
 
 	public GameObject explosionAnimation;
 	private CubeObject[,,] level;
+	private List<LaserBlock> laserBlocks;
+
+	void Awake() {
+		laserBlocks = new List<LaserBlock>();
+	}
 
 	void Start() {
 		// on Start, all the blocks' position/orientation data will be initialized
@@ -24,6 +29,10 @@ public class LevelManager : MonoBehaviour {
 		foreach (Transform blockTransform in transform) {
 			Debug.Assert(blockTransform.GetComponent<CubeObject>() != null, "Warning: CubeObject in level is missing CubeObject script!");
 			CubeObject block = blockTransform.GetComponent<CubeObject>();
+			// also populate the laserBlock list
+			if (block is LaserBlock) {
+				laserBlocks.Add((LaserBlock)block);
+			}
 			for (int i = 0; i < 3; i++) {
 				if (block.levelPos[i] > levelBounds[i]) {
 					levelBounds[i] = block.levelPos[i];
@@ -84,34 +93,30 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public void move(Vector3Int pos, Vector3Int direction) {
-		List<Vector3Int> movedBlocks = new List<Vector3Int>();
-		tryPush(pos, direction, movedBlocks);
-
-		foreach (Vector3Int blockPos in movedBlocks) {
-			getMoveConsequences(blockPos);
+		List<Vector3Int> updatedBlocks = new List<Vector3Int>();
+		tryPush(pos, direction, updatedBlocks);
+		bool stillFalling = true;
+		while (stillFalling) {
+			getMoveConsequences(updatedBlocks); // this might add more blocks to the list
+			stillFalling = iterateFalling(updatedBlocks);
 		}
-		iterativeFall(movedBlocks);
-		// for each block without anything underneath it, fall its whole stack
-		// otherwise iterate upwards and fall stuff down to get rid of holes from explosions
-
-		//check if scientist on goalblock
 	}
 
-    private bool tryPush(Vector3Int pos, Vector3Int direction, List<Vector3Int> movedBlocks) {
+    private bool tryPush(Vector3Int pos, Vector3Int direction, List<Vector3Int> updatedBlocks) {
 		CubeObject blockToMove = getCubeObjIn(pos);
 		Debug.Assert(blockToMove != null, "Warning: trying to push a null block!");
 		Vector3Int adjacentPos = pos + direction;
 		if (blockToMove.isMovable && isInBounds(adjacentPos)) {
 			CubeObject adjacentBlock = getCubeObjIn(adjacentPos);
-			if (adjacentBlock == null || tryPush(adjacentPos, direction, movedBlocks)) {
+			if (adjacentBlock == null || tryPush(adjacentPos, direction, updatedBlocks)) {
 				// can push, update position in level array
 				moveInArray(pos, adjacentPos);
 				// move block in world
 				blockToMove.updatePos(direction);
-				movedBlocks.Add(blockToMove.levelPos); 
+				updatedBlocks.Add(blockToMove.levelPos); 
 				// try to move blocks on top of the pushed block
 				if (getCubeObjIn(pos+Vector3Int.up) != null) {
-					tryPush(pos + Vector3Int.up, direction, movedBlocks);
+					tryPush(pos + Vector3Int.up, direction, updatedBlocks);
 				}
 				return true;
 			}
@@ -125,78 +130,70 @@ public class LevelManager : MonoBehaviour {
 		level[pos1.x, pos1.y, pos1.z] = null;
 	}
 
-	private void getMoveConsequences(Vector3Int pos) {
-		Debug.Assert(isInBounds(pos), "Warning: movedBlocks contains an out of bounds position!");
-		CubeObject block = getCubeObjIn(pos);
-
-		// if block was already destroyed somehow, none of these will be true
-		if (block is ExplodeBlock) {
-			if (isInLaser(pos)) {
-				explodeOutwards(pos);
+	private void getMoveConsequences(List<Vector3Int> updatedBlocks) {
+		// kill blocks in lasers, explosions will add blocks to updatedBlocks list
+		foreach (LaserBlock laserBlock in laserBlocks) {
+			CubeObject laserTarget = getLaserTarget(laserBlock.levelPos, laserBlock.orientation);
+			if (laserTarget is ExplodeBlock) {
+				explodeOutwards(laserTarget.levelPos, updatedBlocks);
+			} else if (laserTarget is BlockRobot) {
+				((BlockRobot)laserTarget).spawnCorpse();
+				laserTarget.die();
+			} else if (laserTarget is Scientist) {
+				laserTarget.die();
 			}
-		} else if (block is BlockRobot) {
-			if (isInLaser(pos)) {
-				((BlockRobot)block).spawnCorpse();
-				block.die();
-			}
-		} else if (block is Scientist) {
-			if (getCubeObjIn(pos + Vector3Int.down) is GoalBlock) {
+		}
+		// prune dead blocks from updatedBlocks, check if won
+		for (int i = 0; i < updatedBlocks.Count; i++) {
+			Vector3Int blockPos = updatedBlocks[i];
+			CubeObject block = getCubeObjIn(blockPos);
+			if (block == null) {
+				updatedBlocks.RemoveAt(i);
+				i--;
+			} else if (block is Scientist && getCubeObjIn(blockPos + Vector3Int.down) is GoalBlock) {
 				win();
-			} else if (isInLaser(pos)) {
-				block.die();
 			}
+			
 		}
 	}
 
-	private void iterativeFall(List<Vector3Int> blockPositions) {
-		bool stillFalling = true;
-		while (stillFalling) {
-			stillFalling = false;
-			for (int i = 0; i < blockPositions.Count; i++) {
-				Debug.Log(blockPositions[i].ToString());
-			}
-			for (int i = 0; i < blockPositions.Count; i++) {
-				Debug.Log("1");
-				CubeObject blockToFall = getCubeObjIn(blockPositions[i]);
-				Debug.Log("2");
-				tryFall(blockPositions[i]);
-				Debug.Log("3");
-				if (blockToFall == null) {
-					Debug.Log("4");
-					// fell off the map
-					blockPositions.RemoveAt(i);
-					i--;
-					stillFalling = true;
-				} else if (blockToFall.levelPos == blockPositions[i] + Vector3Int.down) {
-					Debug.Log("5");
-					// fell by one
-					blockPositions[i] = blockToFall.levelPos;
-					stillFalling = true;
-				}
+	private bool iterateFalling(List<Vector3Int> blockPositions) {
+		for (int i = 0; i < blockPositions.Count; i++) {
+		}
+		bool blocksFell = false;
+		for (int i = 0; i < blockPositions.Count; i++) {
+			CubeObject blockToFall = getCubeObjIn(blockPositions[i]);
+			tryFall(blockPositions[i]);
+			if (blockToFall == null) {
+				// fell off the map
+				blockPositions.RemoveAt(i);
+				i--;
+				blocksFell = true;
+			} else if (blockToFall.levelPos == blockPositions[i] + Vector3Int.down) {
+				// fell by one
+				blockPositions[i] = blockToFall.levelPos;
+				blocksFell = true;
 			}
 		}
+		return blocksFell;
+
 	}
 
 	private void tryFall(Vector3Int pos) {
-		Debug.Log("Tryfall pos " + pos.ToString());
 		CubeObject blockToFall = getCubeObjIn(pos);
-		if (blockToFall == null) { 
-			return;
-		}
 		Debug.Assert(blockToFall != null, "Warning: tryFall called on null block!");
 		Vector3Int below = pos + Vector3Int.down;
 		if (!isInBounds(below)) {
 			Rigidbody body = blockToFall.GetComponent<Rigidbody>();
 			body.useGravity = true;
 			body.isKinematic = false;
-			Destroy(blockToFall.gameObject, 2);
+			Destroy(blockToFall.gameObject, 1);
 			DestroyImmediate(blockToFall);
 		} else if (getCubeObjIn(below) == null) {
 			// update position in level array
 			moveInArray(pos, below);
 			// move block in world
 			blockToFall.updatePos(Vector3Int.down);
-			getMoveConsequences(below);
 		}
 	}
 
@@ -235,7 +232,21 @@ public class LevelManager : MonoBehaviour {
 		}
 	}
 
-	public void explodeOutwards(Vector3Int pos) {
+	private CubeObject getLaserTarget(Vector3Int laserPos, Vector3Int direction) {
+		Vector3Int adjacentPos = laserPos + direction;
+		if (!isInBounds(adjacentPos)) {
+			return null;
+		}
+		CubeObject adjacentBlock = getCubeObjIn(adjacentPos);
+		if (adjacentBlock == null || adjacentBlock is GlassBlock) {
+			// there's no block in the way, keep searching in this direction
+			return getLaserTarget(adjacentPos, direction);
+		} else {
+			return adjacentBlock;
+		}
+	}
+
+	public void explodeOutwards(Vector3Int pos, List<Vector3Int> updatedBlocks) {
 		CubeObject blockToExplode = getCubeObjIn(pos);
 		Debug.Assert(blockToExplode != null, "Warning: attempting to explode an empty block somehow.");
 		DestroyImmediate(blockToExplode.gameObject); // immediate prevents other explosions from re-exploding this block
@@ -244,26 +255,26 @@ public class LevelManager : MonoBehaviour {
 			for (int i = 0; i < 3; i++) {
 				Vector3Int searchOrientation = new Vector3Int(0, 0, 0);
 				searchOrientation[i] = sign;
-				explodeInDirection(searchOrientation, pos);
+				explodeInDirection(searchOrientation, pos, updatedBlocks);
 			}
 		}
 	}
 
-	private void explodeInDirection(Vector3Int direction, Vector3Int pos) {
+	private void explodeInDirection(Vector3Int direction, Vector3Int pos, List<Vector3Int> updatedBlocks) {
 		Vector3Int adjacentPos = pos + direction;
 		if (!isInBounds(adjacentPos)) {
 			return;
 		}
-		explodePos(adjacentPos);
-		explodeInDirection(direction, adjacentPos);
+		explodePos(adjacentPos, updatedBlocks);
+		explodeInDirection(direction, adjacentPos, updatedBlocks);
 	}
 
-	private void explodePos(Vector3Int pos) {
+	private void explodePos(Vector3Int pos, List<Vector3Int> updatedBlocks) {
 		CubeObject occupant = getCubeObjIn(pos);
 		if (occupant == null) {
 			animateExplosion(pos);
 		} else if (occupant is ExplodeBlock) {
-			explodeOutwards(pos);
+			explodeOutwards(pos, updatedBlocks);
 		} else if (occupant is BlockRobot || occupant is Scientist || occupant is CrackedBlock || occupant is NormalBlock) {
 			occupant.die();
 		}
