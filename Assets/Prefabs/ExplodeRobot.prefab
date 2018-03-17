@@ -273,6 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
+  isMovable: 1
 --- !u!136 &136207176400119098
 CapsuleCollider:
   m_ObjectHideFlags: 1

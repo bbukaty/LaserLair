@@ -11,8 +11,4 @@ public class StaticBlock: CubeObject {
         }
     }
 
-    public override bool tryPush(Vector3Int movement, List<CubeObject> movedBlocks) {
-        return false;
-    }
-
 }

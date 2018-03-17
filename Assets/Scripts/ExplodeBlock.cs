@@ -20,6 +20,7 @@ public class ExplodeBlock : CubeObject {
 	}
 
 	public override void tryExplode() {
+		levelManager.animateExplosion(levelPos);
 		levelManager.explodeOutwards(levelPos);
 		Destroy(gameObject);
 	}

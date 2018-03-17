@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Scientist: CubeObject {
 
-	public override void getMoveConsequences() {
-		base.getMoveConsequences();
+	public override void checkIfDead() {
+		base.checkIfDead();
 		if (levelManager.getCubeObjIn(levelPos + Vector3Int.down) is GoalBlock) {
 			levelManager.win();
 		}

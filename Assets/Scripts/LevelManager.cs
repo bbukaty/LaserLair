@@ -83,7 +83,7 @@ public class LevelManager : MonoBehaviour {
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}
 
-	public void moveBlock(Vector3Int pos1, Vector3Int pos2) {
+	private void moveInArray(Vector3Int pos1, Vector3Int pos2) {
 		Debug.Assert(getCubeObjIn(pos2) == null, "Warning: overwriting existing block in levelManager!");
 		level[pos2.x, pos2.y, pos2.z] = level[pos1.x, pos1.y, pos1.z];
 		level[pos1.x, pos1.y, pos1.z] = null;
@@ -105,6 +105,37 @@ public class LevelManager : MonoBehaviour {
 		}
 		return result;
 	}
+
+	public void move(Vector3Int pos, Vector3Int direction) {
+		List<CubeObject> movedBlocks = new List<CubeObject>();
+		tryPush(pos, direction, movedBlocks);
+
+		movedBlocks.ForEach(delegate(CubeObject block) {
+			Debug.Log("Getting conseq for block at " + block.levelPos.ToString());
+            block.checkIfDead();
+        });
+		// for each block without anything underneath it, fall its whole stack
+		// otherwise iterate upwards and fall stuff down to get rid of holes from explosions
+
+	}
+
+    private bool tryPush(Vector3Int pos, Vector3Int direction, List<CubeObject> movedBlocks) {
+		CubeObject blockToMove = getCubeObjIn(pos);
+		Debug.Assert(blockToMove != null, "Warning: trying to push a null block!");
+		Vector3Int adjacentPos = pos + direction;
+		if (blockToMove.isMovable && isInBounds(adjacentPos)) {
+			CubeObject adjacentBlock = getCubeObjIn(adjacentPos);
+			if (adjacentBlock == null || tryPush(adjacentPos, direction, movedBlocks)) {
+				// can push, update position in level array
+				moveInArray(pos, adjacentPos);
+				// move block in world
+				blockToMove.updatePos(direction);
+				movedBlocks.Add(blockToMove);
+				return true;
+			}
+		}
+        return false;
+    }
 
 	private bool isLaserInDirection(Vector3Int direction, Vector3Int pos) {
 		Vector3Int adjacentPos = pos + direction;

@@ -6,13 +6,14 @@ public class CubeObject: MonoBehaviour {
 
 	public Vector3Int orientation;
     public Vector3Int levelPos;
+    public bool isMovable;
 
     protected LevelManager levelManager;
 
     void Awake() {
         // find the level manager object in the scene to get level data from
-		levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-		Debug.Assert(levelManager != null, "Warning: Level Manager script not found in scene!");
+        Debug.Assert(transform.parent != null, "Warning: Level Manager script not found in scene!");
+		levelManager = transform.parent.GetComponent<LevelManager>();
         initOrientation();
 		initLevelPos();
 	}
@@ -36,7 +37,6 @@ public class CubeObject: MonoBehaviour {
 	}
 
     public void updatePos(Vector3Int movement) {
-        levelManager.moveBlock(levelPos, levelPos + movement);
         levelPos += movement;
         transform.Translate(movement, Space.World);
     }
@@ -44,36 +44,12 @@ public class CubeObject: MonoBehaviour {
     public void updateOrientation(Vector3Int direction) {
 		transform.forward = direction;
 		orientation = direction;
-	}
+	}    
 
-    ///<summary>
-	///Try to push this block in the movement direction, propogates push through other blocks.
-	///Returns whether push was successful. 
-	///</summary>
-    public virtual bool tryPush(Vector3Int movement, List<CubeObject> movedBlocks) {
-        bool canMove = false;
-        Vector3Int adjacentPos = levelPos + movement;
-        if (levelManager.isInBounds(adjacentPos)) {
-            CubeObject adjacentBlock = levelManager.getCubeObjIn(adjacentPos);
-            if (adjacentBlock == null) {
-                canMove = true;
-            } else {
-                canMove = adjacentBlock.tryPush(movement, movedBlocks);
-            }
-        }
-        if (canMove) {
-            // update position in level manager and in internal levelPos var
-            updatePos(movement);
-            movedBlocks.Add(this);
-		}
-        return canMove;
-    }
-
-    public virtual void getMoveConsequences() {
+    public virtual void checkIfDead() {
 		if (levelManager.isInLaser(levelPos)) {
 			tryBurn();
 		}
-		tryFall();
     }
 
     public virtual void tryBurn() {

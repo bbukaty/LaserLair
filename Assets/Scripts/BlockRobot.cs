@@ -11,7 +11,7 @@ public class BlockRobot: CubeObject {
 		// Destroy robot and leave corpse object in its place, parented to level manager
 		CubeObject corpse = Instantiate(corpsePrefab, levelPos, Quaternion.Euler(90,0,0), levelManager.transform).GetComponent<CubeObject>();
 		levelManager.addBlock(corpse);
-		corpse.getMoveConsequences();
+		corpse.checkIfDead();
 		Destroy(gameObject);
 	}
 
