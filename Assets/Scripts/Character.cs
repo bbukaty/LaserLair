@@ -53,19 +53,19 @@ public class Character: MonoBehaviour {
 		CubeObject facingBlock = levelManager.getCubeObjIn(cubeObject.levelPos + cubeObject.orientation);
 		if (movement == cubeObject.orientation) {
 			if (isGrabbing) {
-				cubeObject.push(movement);
+				cubeObject.tryPush(movement);
 			} else if (facingBlock != null) {
 				tryJump(movement);
 			} else {
-				cubeObject.push(movement);
+				cubeObject.tryPush(movement);
 			}
 		} else if (movement == cubeObject.orientation * -1) {
 			//can't jump up backwards
 			if (isGrabbing) {
 				Debug.Log("pulling block backwards");
-				facingBlock.push(movement);
+				facingBlock.tryPush(movement);
 			} else {
-				cubeObject.push(movement);
+				cubeObject.tryPush(movement);
 			}
 		} else { // movement axis doesn't align with current orientation
 			// drop grabbed block

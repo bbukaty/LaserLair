@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplodeRobot : CubeObject {
+public class ExplodeBlock : CubeObject {
 
-	public override void die() {
+	public override void tryBurn() {
 		// Debug.Log("Robot died in laser");
 		// for (int x = -1; x <= 1; x++){
 		// 	for (int y = -1; y <= 1; y++){
@@ -15,6 +15,11 @@ public class ExplodeRobot : CubeObject {
 		// 		}
 		// 	}
 		// }
+		levelManager.explodeOutwards(levelPos);
+		Destroy(gameObject);
+	}
+
+	public override void tryExplode() {
 		levelManager.explodeOutwards(levelPos);
 		Destroy(gameObject);
 	}

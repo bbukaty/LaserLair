@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour {
 	private CubeObject[,,] level;
 
 	void Start() {
+		// on Start, all the blocks' position/orientation data will be initialized
 		getLevelFromScene();
 	}
 
@@ -148,16 +149,13 @@ public class LevelManager : MonoBehaviour {
 		if (occupant == null) {
 			animateExplosion(pos);
 		} else {
-			if (occupant.diesToExplosion) {
-				animateExplosion(pos);
-				occupant.die();
-			}
+			occupant.tryExplode();
 		}
 	}
 
 	public void animateExplosion(Vector3Int pos) {
-		GameObject explosion = Instantiate(explosionAnimation, pos, Quaternion.identity);
-	 	Destroy(explosion, .5f);
+		// GameObject explosion = Instantiate(explosionAnimation, pos, Quaternion.identity);
+	 	// Destroy(explosion, .5f);
 	}
 }
 

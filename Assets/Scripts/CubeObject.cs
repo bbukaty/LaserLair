@@ -6,10 +6,6 @@ public class CubeObject: MonoBehaviour {
 
 	public Vector3Int orientation;
     public Vector3Int levelPos;
-    public Transform corpsePrefab;
-    public bool isMovable;
-    public bool diesToExplosion;
-    public bool diesToLaser;
 
     protected LevelManager levelManager;
 
@@ -55,17 +51,15 @@ public class CubeObject: MonoBehaviour {
 	///Try to push this block in the movement direction, propogates push through other blocks.
 	///Returns whether push was successful. 
 	///</summary>
-    public bool push(Vector3Int movement, bool justChecking = false) {
+    public virtual bool tryPush(Vector3Int movement, bool justChecking = false) {
         bool canMove = false;
-        if (isMovable) {
-            Vector3Int adjacentPos = levelPos + movement;
-            if (levelManager.isInBounds(adjacentPos)) {
-                CubeObject adjacentBlock = levelManager.getCubeObjIn(adjacentPos);
-                if (adjacentBlock == null) {
-                    canMove = true;
-                } else {
-                    canMove = adjacentBlock.push(movement, justChecking);
-                }
+        Vector3Int adjacentPos = levelPos + movement;
+        if (levelManager.isInBounds(adjacentPos)) {
+            CubeObject adjacentBlock = levelManager.getCubeObjIn(adjacentPos);
+            if (adjacentBlock == null) {
+                canMove = true;
+            } else {
+                canMove = adjacentBlock.tryPush(movement, justChecking);
             }
         }
         if (canMove && !justChecking) {
@@ -76,14 +70,18 @@ public class CubeObject: MonoBehaviour {
     }
 
     public virtual void getMoveConsequences() {
-		if (diesToLaser && levelManager.isInLaser(levelPos)) {
-			die();
+		if (levelManager.isInLaser(levelPos)) {
+			tryBurn();
 		}
 		tryFall();
     }
 
-    public virtual void die() {
-        Destroy(gameObject);
+    public virtual void tryBurn() {
+        return;
+    }
+
+    public virtual void tryExplode() {
+        return;
     }
 
     protected void tryFall() {
