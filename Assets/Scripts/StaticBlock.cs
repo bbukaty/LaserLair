@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class StaticBlock: CubeObject {
     void Start() {
-        int axis = Random.Range(0,3);
-        Vector3Int newOrientation = new Vector3Int();
-        newOrientation[axis] = Random.Range(0,2) == 0 ? 1 : -1;
-        Debug.Log(newOrientation.ToString());
-        updateOrientation(newOrientation);
+        transform.Rotate(Vector3.up*90*Random.Range(0,4), Space.World);
+        if (levelPos.y != 0) {
+            transform.Rotate(Vector3.right*90*Random.Range(0,4), Space.World);
+        }
     }
-
 }

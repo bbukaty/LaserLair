@@ -23,7 +23,7 @@ public class FollowCamera : MonoBehaviour {
 	void Update () {
 		Vector3 destination;
 		if (player != null) {
-			destination = new Vector3(startPos.x, player.position.y + offset.y, player.position.z + offset.z);
+			destination = player.position + offset;
 		} else {
 			destination = startPos;
 			// no player assigned yet, or player dead: return to startpos
