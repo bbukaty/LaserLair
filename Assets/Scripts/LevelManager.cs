@@ -163,73 +163,32 @@ public class LevelManager : MonoBehaviour {
 		bool blocksFell = false;
 		for (int i = 0; i < blockPositions.Count; i++) {
 			CubeObject blockToFall = getCubeObjIn(blockPositions[i]);
-			tryFall(blockPositions[i]);
-			if (blockToFall == null) {
-				// fell off the map
+			Debug.Assert(blockToFall != null, "Warning: tryFall called on null block!");
+			Vector3Int below = blockPositions[i] + Vector3Int.down;
+			if (!isInBounds(below)) {
+				blocksFell = true;
+				fallOut(blockToFall);
 				blockPositions.RemoveAt(i);
 				i--;
+			} else if (getCubeObjIn(below) == null) {
 				blocksFell = true;
-			} else if (blockToFall.levelPos == blockPositions[i] + Vector3Int.down) {
-				// fell by one
-				blockPositions[i] = blockToFall.levelPos;
-				blocksFell = true;
+				// update position in level array and updatedBlocks
+				moveInArray(blockToFall.levelPos, below);
+				blockPositions[i] = below;
+				// move block in world
+				blockToFall.updatePos(Vector3Int.down);
 			}
 		}
 		return blocksFell;
 
 	}
 
-	private void tryFall(Vector3Int pos) {
-		CubeObject blockToFall = getCubeObjIn(pos);
-		Debug.Assert(blockToFall != null, "Warning: tryFall called on null block!");
-		Vector3Int below = pos + Vector3Int.down;
-		if (!isInBounds(below)) {
-			Rigidbody body = blockToFall.GetComponent<Rigidbody>();
-			body.useGravity = true;
-			body.isKinematic = false;
-			Destroy(blockToFall.gameObject, 1);
-			DestroyImmediate(blockToFall);
-		} else if (getCubeObjIn(below) == null) {
-			// update position in level array
-			moveInArray(pos, below);
-			// move block in world
-			blockToFall.updatePos(Vector3Int.down);
-		}
-	}
-
-	///<summary>
-	///Returns whether or not a laser passes through position pos.
-	///</summary>
-	public bool isInLaser(Vector3Int pos) {
-		bool result = false;
-		for (int sign = -1; sign <= 1; sign += 2) {
-			for (int i = 0; i < 3; i++) {
-				Vector3Int searchOrientation = new Vector3Int(0, 0, 0);
-				searchOrientation[i] = sign;
-				if (isLaserInDirection(searchOrientation, pos)) {
-					result = true;
-				}
-			}
-		}
-		return result;
-	}
-
-	private bool isLaserInDirection(Vector3Int direction, Vector3Int pos) {
-		Vector3Int adjacentPos = pos + direction;
-		if (!isInBounds(adjacentPos)) {
-			return false;
-		}
-		CubeObject adjacentBlock = getCubeObjIn(adjacentPos);
-		if (adjacentBlock == null || adjacentBlock is GlassBlock) {
-			// there's no block in the way, keep searching in this direction
-			return isLaserInDirection(direction, adjacentPos);
-		} else if (adjacentBlock is LaserBlock && adjacentBlock.orientation == direction * -1) {
-			// there's a laser pointing towards pos
-			return true;
-		} else {
-			// there's a non-laser block in the way of any potential beams in this direction
-			return false;
-		}
+	private void fallOut(CubeObject blockToFall) {
+		Rigidbody body = blockToFall.GetComponent<Rigidbody>();
+		body.useGravity = true;
+		body.isKinematic = false;
+		Destroy(blockToFall.gameObject, 1);
+		DestroyImmediate(blockToFall);
 	}
 
 	private CubeObject getLaserTarget(Vector3Int laserPos, Vector3Int direction) {
