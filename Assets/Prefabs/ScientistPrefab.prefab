@@ -1212,10 +1212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
-  corpsePrefab: {fileID: 0}
   isMovable: 1
-  diesToExplosion: 1
-  diesToLaser: 1
 --- !u!114 &114528100505954036
 MonoBehaviour:
   m_ObjectHideFlags: 1

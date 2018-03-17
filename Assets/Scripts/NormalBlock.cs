@@ -3,9 +3,5 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class NormalBlock : CubeObject {
-
-	public override void tryExplode() {
-		Destroy(gameObject);
-	}
 	
 }

@@ -81,7 +81,7 @@ public class Character: MonoBehaviour {
 		}
 		Vector3Int newPos = cubeObject.levelPos + movement + Vector3Int.up;
 		if (levelManager.isInBounds(newPos) && levelManager.getCubeObjIn(newPos) == null) {
-			cubeObject.updatePos(movement + Vector3Int.up);
+			levelManager.move(cubeObject.levelPos, movement + Vector3Int.up);
 		}
 	}
 }

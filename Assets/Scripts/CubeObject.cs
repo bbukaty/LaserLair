@@ -44,21 +44,12 @@ public class CubeObject: MonoBehaviour {
     public void updateOrientation(Vector3Int direction) {
 		transform.forward = direction;
 		orientation = direction;
-	}    
+	}
 
-    public virtual void checkIfDead() {
-		if (levelManager.isInLaser(levelPos)) {
-			tryBurn();
-		}
-    }
-
-    public virtual void tryBurn() {
-        return;
-    }
-
-    public virtual void tryExplode() {
-        return;
-    }
+    public void die() {
+		levelManager.animateExplosion(levelPos);
+		Destroy(gameObject);
+	}
 
     protected void tryFall() {
 		Vector3Int below = levelPos + Vector3Int.down;
