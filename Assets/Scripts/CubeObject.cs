@@ -50,19 +50,4 @@ public class CubeObject: MonoBehaviour {
 		levelManager.animateExplosion(levelPos);
 		Destroy(gameObject);
 	}
-
-    protected void tryFall() {
-		Vector3Int below = levelPos + Vector3Int.down;
-		if (!levelManager.isInBounds(below)) {
-            //TODO: trigger this for all cubeObjects above this immediately
-			// fall out of level, remove character component while falling so they can't move
-			Rigidbody body = GetComponent<Rigidbody>();
-			body.useGravity = true;
-			body.isKinematic = false;
-			Destroy(gameObject, 2);
-			Destroy(this);
-		} else if (levelManager.getCubeObjIn(below) == null) {
-			updatePos(Vector3Int.down);
-		}
-	}
 }

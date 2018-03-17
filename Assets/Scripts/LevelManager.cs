@@ -83,34 +83,14 @@ public class LevelManager : MonoBehaviour {
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}
 
-	private void moveInArray(Vector3Int pos1, Vector3Int pos2) {
-		Debug.Assert(getCubeObjIn(pos2) == null, "Warning: overwriting existing block in levelManager!");
-		level[pos2.x, pos2.y, pos2.z] = level[pos1.x, pos1.y, pos1.z];
-		level[pos1.x, pos1.y, pos1.z] = null;
-	}
-
-	///<summary>
-	///Returns whether or not a laser passes through position pos.
-	///</summary>
-	public bool isInLaser(Vector3Int pos) {
-		bool result = false;
-		for (int sign = -1; sign <= 1; sign += 2) {
-			for (int i = 0; i < 3; i++) {
-				Vector3Int searchOrientation = new Vector3Int(0, 0, 0);
-				searchOrientation[i] = sign;
-				if (isLaserInDirection(searchOrientation, pos)) {
-					result = true;
-				}
-			}
-		}
-		return result;
-	}
-
 	public void move(Vector3Int pos, Vector3Int direction) {
 		List<Vector3Int> movedBlocks = new List<Vector3Int>();
 		tryPush(pos, direction, movedBlocks);
 
-		movedBlocks.ForEach(getMoveConsequences);
+		foreach (Vector3Int blockPos in movedBlocks) {
+			getMoveConsequences(blockPos);
+		}
+		iterativeFall(movedBlocks);
 		// for each block without anything underneath it, fall its whole stack
 		// otherwise iterate upwards and fall stuff down to get rid of holes from explosions
 
@@ -130,12 +110,20 @@ public class LevelManager : MonoBehaviour {
 				blockToMove.updatePos(direction);
 				movedBlocks.Add(blockToMove.levelPos); 
 				// try to move blocks on top of the pushed block
-				tryPush(pos + Vector3Int.up, direction, movedBlocks);
+				if (getCubeObjIn(pos+Vector3Int.up) != null) {
+					tryPush(pos + Vector3Int.up, direction, movedBlocks);
+				}
 				return true;
 			}
 		}
         return false;
     }
+
+	private void moveInArray(Vector3Int pos1, Vector3Int pos2) {
+		Debug.Assert(getCubeObjIn(pos2) == null, "Warning: overwriting existing block in levelManager!");
+		level[pos2.x, pos2.y, pos2.z] = level[pos1.x, pos1.y, pos1.z];
+		level[pos1.x, pos1.y, pos1.z] = null;
+	}
 
 	private void getMoveConsequences(Vector3Int pos) {
 		Debug.Assert(isInBounds(pos), "Warning: movedBlocks contains an out of bounds position!");
@@ -152,10 +140,81 @@ public class LevelManager : MonoBehaviour {
 				block.die();
 			}
 		} else if (block is Scientist) {
-			if (isInLaser(pos)) {
+			if (getCubeObjIn(pos + Vector3Int.down) is GoalBlock) {
+				win();
+			} else if (isInLaser(pos)) {
 				block.die();
 			}
 		}
+	}
+
+	private void iterativeFall(List<Vector3Int> blockPositions) {
+		bool stillFalling = true;
+		while (stillFalling) {
+			stillFalling = false;
+			for (int i = 0; i < blockPositions.Count; i++) {
+				Debug.Log(blockPositions[i].ToString());
+			}
+			for (int i = 0; i < blockPositions.Count; i++) {
+				Debug.Log("1");
+				CubeObject blockToFall = getCubeObjIn(blockPositions[i]);
+				Debug.Log("2");
+				tryFall(blockPositions[i]);
+				Debug.Log("3");
+				if (blockToFall == null) {
+					Debug.Log("4");
+					// fell off the map
+					blockPositions.RemoveAt(i);
+					i--;
+					stillFalling = true;
+				} else if (blockToFall.levelPos == blockPositions[i] + Vector3Int.down) {
+					Debug.Log("5");
+					// fell by one
+					blockPositions[i] = blockToFall.levelPos;
+					stillFalling = true;
+				}
+			}
+		}
+	}
+
+	private void tryFall(Vector3Int pos) {
+		Debug.Log("Tryfall pos " + pos.ToString());
+		CubeObject blockToFall = getCubeObjIn(pos);
+		if (blockToFall == null) { 
+			return;
+		}
+		Debug.Assert(blockToFall != null, "Warning: tryFall called on null block!");
+		Vector3Int below = pos + Vector3Int.down;
+		if (!isInBounds(below)) {
+			Rigidbody body = blockToFall.GetComponent<Rigidbody>();
+			body.useGravity = true;
+			body.isKinematic = false;
+			Destroy(blockToFall.gameObject, 2);
+			DestroyImmediate(blockToFall);
+		} else if (getCubeObjIn(below) == null) {
+			// update position in level array
+			moveInArray(pos, below);
+			// move block in world
+			blockToFall.updatePos(Vector3Int.down);
+			getMoveConsequences(below);
+		}
+	}
+
+	///<summary>
+	///Returns whether or not a laser passes through position pos.
+	///</summary>
+	public bool isInLaser(Vector3Int pos) {
+		bool result = false;
+		for (int sign = -1; sign <= 1; sign += 2) {
+			for (int i = 0; i < 3; i++) {
+				Vector3Int searchOrientation = new Vector3Int(0, 0, 0);
+				searchOrientation[i] = sign;
+				if (isLaserInDirection(searchOrientation, pos)) {
+					result = true;
+				}
+			}
+		}
+		return result;
 	}
 
 	private bool isLaserInDirection(Vector3Int direction, Vector3Int pos) {

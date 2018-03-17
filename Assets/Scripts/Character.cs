@@ -71,6 +71,7 @@ public class Character: MonoBehaviour {
 			// drop grabbed block
 			isGrabbing = false;
 			cubeObject.updateOrientation(direction);
+			//TODO: rotate block on head (?)
 		}
 		
 	}
