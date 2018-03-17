@@ -23,8 +23,8 @@ GameObject:
   - component: {fileID: 65044275186737528}
   - component: {fileID: 23091874847495254}
   - component: {fileID: 95547322039301268}
-  - component: {fileID: 114165820104596046}
   - component: {fileID: 54316687842275126}
+  - component: {fileID: 114176655502157472}
   m_Layer: 0
   m_Name: CorpseBlockRobot
   m_TagString: Untagged
@@ -130,7 +130,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114165820104596046
+--- !u!114 &114176655502157472
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -138,12 +138,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1281478938537242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2773df38a3db31499dd68457212a982, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b69d976baff83548ae11d9fa47a03e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
-  corpsePrefab: {fileID: 0}
-  isMovable: 1
-  diesToExplosion: 1
-  diesToLaser: 0

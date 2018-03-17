@@ -39,7 +39,6 @@ public class CubeObject: MonoBehaviour {
         levelManager.moveBlock(levelPos, levelPos + movement);
         levelPos += movement;
         transform.Translate(movement, Space.World);
-        getMoveConsequences();
     }
 
     public void updateOrientation(Vector3Int direction) {
@@ -51,7 +50,7 @@ public class CubeObject: MonoBehaviour {
 	///Try to push this block in the movement direction, propogates push through other blocks.
 	///Returns whether push was successful. 
 	///</summary>
-    public virtual bool tryPush(Vector3Int movement, bool justChecking = false) {
+    public virtual bool tryPush(Vector3Int movement, List<CubeObject> movedBlocks) {
         bool canMove = false;
         Vector3Int adjacentPos = levelPos + movement;
         if (levelManager.isInBounds(adjacentPos)) {
@@ -59,12 +58,13 @@ public class CubeObject: MonoBehaviour {
             if (adjacentBlock == null) {
                 canMove = true;
             } else {
-                canMove = adjacentBlock.tryPush(movement, justChecking);
+                canMove = adjacentBlock.tryPush(movement, movedBlocks);
             }
         }
-        if (canMove && !justChecking) {
+        if (canMove) {
             // update position in level manager and in internal levelPos var
             updatePos(movement);
+            movedBlocks.Add(this);
 		}
         return canMove;
     }

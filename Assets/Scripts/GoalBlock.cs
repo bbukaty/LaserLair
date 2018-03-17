@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GoalBlock: CubeObject {
 
-    public override bool tryPush(Vector3Int movement, bool justChecking = false) {
+    public override bool tryPush(Vector3Int movement, List<CubeObject> movedBlocks) {
         return false;
     }
 

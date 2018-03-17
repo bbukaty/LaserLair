@@ -50,28 +50,33 @@ public class Character: MonoBehaviour {
 			return;
 		}
 		Debug.Log("moving: " + movement.ToString());
+		List<CubeObject> movedBlocks = new List<CubeObject>();
 		CubeObject facingBlock = levelManager.getCubeObjIn(cubeObject.levelPos + cubeObject.orientation);
 		if (movement == cubeObject.orientation) {
 			if (isGrabbing) {
-				cubeObject.tryPush(movement);
+				cubeObject.tryPush(movement, movedBlocks);
 			} else if (facingBlock != null) {
 				tryJump(movement);
 			} else {
-				cubeObject.tryPush(movement);
+				cubeObject.tryPush(movement, movedBlocks);
 			}
 		} else if (movement == cubeObject.orientation * -1) {
 			//can't jump up backwards
 			if (isGrabbing) {
 				Debug.Log("pulling block backwards");
-				facingBlock.tryPush(movement);
+				facingBlock.tryPush(movement, movedBlocks);
 			} else {
-				cubeObject.tryPush(movement);
+				cubeObject.tryPush(movement, movedBlocks);
 			}
 		} else { // movement axis doesn't align with current orientation
 			// drop grabbed block
 			isGrabbing = false;
 			cubeObject.updateOrientation(movement);
 		}
+		movedBlocks.ForEach(delegate(CubeObject block) {
+			Debug.Log("Getting conseq for block at " + block.levelPos.ToString());
+            block.getMoveConsequences();
+        });
 	}
 	
 	private void tryJump(Vector3Int movement) {

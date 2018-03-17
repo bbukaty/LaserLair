@@ -16,6 +16,7 @@ public class BlockRobot: CubeObject {
 	}
 
 	public override void tryExplode() {
+		levelManager.animateExplosion(levelPos);
 		Destroy(gameObject);
 	}
 
