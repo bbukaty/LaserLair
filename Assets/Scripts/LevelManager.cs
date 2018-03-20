@@ -92,6 +92,9 @@ public class LevelManager : MonoBehaviour {
 		level[pos.x, pos.y, pos.z] = blockToAdd;
 	}
 
+	///<summary>
+	///Moves the cubeObject at pos in direction, pushing blocks in the way and updating the level with the consequences of the move.
+	///</summary>
 	public void move(Vector3Int pos, Vector3Int direction) {
 		List<Vector3Int> updatedBlocks = new List<Vector3Int>();
 		tryPush(pos, direction, updatedBlocks);

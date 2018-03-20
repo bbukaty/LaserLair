@@ -12,4 +12,18 @@ interactions with pushing stacked blocks and falling stacks - push grabbed block
 when a block is exploded, check if things are on top and add them to movedBlocks to be iteratively fallen
 when something is blown up, recompute lasers to see if they can hit something new
 
-jumping with block on head - probably negligible
+jumping with block on head - probably negligible - could try to redo as two pushes within one func before consequences
+
+fix lerp code for efficiency http://www.blueraja.com/blog/404/how-to-use-unity-3ds-linear-interpolation-vector3-lerp-correctly
+
+
+
+aight guys here's the lowdown
+top priority/bare minimum:
+grab animation for scientist and block robot (make block robot default pose fit in block, arms in)
+cracked block that can be destroyed by explosions
+
+secondary priority:
+walk animation: scientist + robot
+jump animation: robot only
+sound

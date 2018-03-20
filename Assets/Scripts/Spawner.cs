@@ -14,6 +14,7 @@ public class Spawner : MonoBehaviour {
 
 	private Transform currPlayer;
 	private Transform levelManager;
+	private RectTransform panelPos;
 	
 
 	void Awake() {
@@ -21,6 +22,7 @@ public class Spawner : MonoBehaviour {
 		Debug.Assert(levelManager != null, "Warning: Level Manager script not found in scene!");
 		Debug.Assert(robotPrefabs.Length == buttonSprites.Length, "Warning: Spawner prefabs and sprites lists don't match!");
 		currPlayer = null;
+		panelPos = buttonPanel.GetComponent<RectTransform>();
 	}
 
 	void Start() {
@@ -33,9 +35,17 @@ public class Spawner : MonoBehaviour {
 		}
 	}
 
+
+	void Update() {
+		if (currPlayer == null && panelPos.anchoredPosition != Vector2.zero) {
+			panelPos.anchoredPosition = Vector2.zero;
+		} 
+	}
+
 	public void spawn(Transform robotPrefab) {
 		// Reminder: if the previous player died or was deactivated, its gameObject was destroyed and replaced.
 		if (currPlayer == null) {
+			panelPos.anchoredPosition += Vector2.down * 180f;
 			currPlayer = Instantiate(robotPrefab, spawnLoc, Quaternion.identity, levelManager);
 			levelManager.GetComponent<LevelManager>().addBlock(currPlayer.GetComponent<CubeObject>());
 			playerCam.follow(currPlayer);
