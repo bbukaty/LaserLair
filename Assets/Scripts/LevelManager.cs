@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	void Start() {
-		// on Start, all the blocks' position/orientation data will be initialized
+		// all the blocks' position/orientation data will have been initialized already from Awake
 		getLevelFromScene();
 	}
 
