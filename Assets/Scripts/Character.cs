@@ -57,6 +57,8 @@ public class Character: MonoBehaviour {
 		if (direction == cubeObject.orientation) {
 			if (isGrabbing) {
 				levelManager.move(cubeObject.levelPos, direction);
+				isGrabbing = levelManager.getCubeObjIn(cubeObject.levelPos + cubeObject.orientation) != null;
+				// TODO: keep better track of grabbing, this breaks down if the block you were grabbing falls and is replaced
 			} else if (facingBlock != null) {
 				tryJump(direction);
 			} else {
@@ -67,6 +69,8 @@ public class Character: MonoBehaviour {
 			if (isGrabbing) {
 				Debug.Log("pulling block backwards");
 				levelManager.move(facingBlock.levelPos, direction);
+				isGrabbing = levelManager.getCubeObjIn(cubeObject.levelPos + cubeObject.orientation) != null;
+				// TODO: keep better track of grabbing, this breaks down if the block you were grabbing falls and is replaced
 			} else {
 				levelManager.move(cubeObject.levelPos, direction);
 			}

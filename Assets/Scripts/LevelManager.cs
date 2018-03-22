@@ -119,7 +119,15 @@ public class LevelManager : MonoBehaviour {
 				updatedBlocks.Add(blockToMove.levelPos); 
 				// try to move blocks on top of the pushed block
 				if (getCubeObjIn(pos+Vector3Int.up) != null) {
-					tryPush(pos + Vector3Int.up, direction, updatedBlocks);
+					bool aboveWasPushed = tryPush(pos + Vector3Int.up, direction, updatedBlocks);
+					if (!aboveWasPushed) {
+						// add all blocks above here to updatedBlocks so that they fall, since their base has been removed
+						Vector3Int currPos = pos + Vector3Int.up;
+						while (isInBounds(currPos) && getCubeObjIn(currPos) != null) {
+							updatedBlocks.Add(currPos);
+							currPos += Vector3Int.up;
+						}
+					}
 				}
 				return true;
 			}
@@ -167,6 +175,8 @@ public class LevelManager : MonoBehaviour {
 		for (int i = 0; i < blockPositions.Count; i++) {
 			CubeObject blockToFall = getCubeObjIn(blockPositions[i]);
 			Debug.Assert(blockToFall != null, "Warning: tryFall called on null block!");
+			// certain block types don't fall
+			if (blockToFall is StaticBlock || blockToFall is CrackedBlock) continue;
 			Vector3Int below = blockPositions[i] + Vector3Int.down;
 			if (!isInBounds(below)) {
 				blocksFell = true;
