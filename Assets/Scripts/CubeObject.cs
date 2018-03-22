@@ -74,7 +74,7 @@ public class CubeObject: MonoBehaviour {
     void Update() {
         if (isMoving) {
 			float timeSinceStarted = Time.time - timeStartedMoving;
-            float percentageComplete = timeSinceStarted / 0.1f;
+            float percentageComplete = timeSinceStarted / 0.08f;
  
             transform.position = Vector3.Lerp(startPosition, endPosition, percentageComplete);
  

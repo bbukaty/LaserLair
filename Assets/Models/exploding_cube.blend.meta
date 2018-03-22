@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4a0df98d2a67a1847bbb663d37886544
-timeCreated: 1521723097
+timeCreated: 1521730265
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -8,6 +8,7 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: Material__movable_cube
+    2100002: Material
     2300000: //RootNode
     3300000: //RootNode
     4300000: Cube
