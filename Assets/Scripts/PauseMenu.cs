@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
 
@@ -39,12 +40,12 @@ public class PauseMenu : MonoBehaviour {
 	public void LoadMenu() 
 	{
 		Time.timeScale = 1f;
-		Application.LoadLevel("Level Select");
+		SceneManager.LoadScene("Level Select");
 	}
 
 	public void RestartLevel()
 	{
-		Application.LoadLevel(Application.loadedLevel);
+		SceneManager.LoadScene(Application.loadedLevel);
 	}
 
 	public void QuitGame() 
