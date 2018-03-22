@@ -8,6 +8,7 @@ public class Character: MonoBehaviour {
 	public bool canJump; 
 	public AudioClip walkingClip;
 
+	private Animator characterAnimator;
 	private bool isGrabbing;
     private LevelManager levelManager;
 	private CharacterManager characterManager;
@@ -23,6 +24,7 @@ public class Character: MonoBehaviour {
 		Debug.Assert(cubeObject != null, "Warning: Character initialized with no CubeObject attached!");
 		isGrabbing = false;
 		audioSource = GetComponent<AudioSource>();
+		characterAnimator = GetComponentInChildren<Animator>();
 	}
 
 	private void walkSound() {
@@ -48,17 +50,23 @@ public class Character: MonoBehaviour {
 		} else if (Input.GetButtonDown("Grab") && canGrab) {
 			tryGrab();
 		}
+		if (!cubeObject.isMoving) {
+			characterAnimator.SetBool("isMovingForward", false);
+			characterAnimator.SetBool("isMovingBack", false);
+		}
 	}
 
 	private void tryGrab() {
 		if (cubeObject.modelIsMoving()) {
 			return;
 		} else if (isGrabbing) {
+			characterAnimator.SetBool("isGrabbing", false);
 			isGrabbing = false;
 		} else if (levelManager.getCubeObjIn(cubeObject.levelPos + cubeObject.orientation) != null) {
 			// toggle grab animation
 			isGrabbing = true;
 		}
+		characterAnimator.SetBool("isGrabbing", isGrabbing);
 	}
 
     private void applyInput(Vector3Int direction) {
@@ -67,6 +75,7 @@ public class Character: MonoBehaviour {
 		}
 		CubeObject facingBlock = levelManager.getCubeObjIn(cubeObject.levelPos + cubeObject.orientation);
 		if (direction == cubeObject.orientation) {
+			characterAnimator.SetBool("isMovingForward", true);
 			if (isGrabbing) {
 				levelManager.move(cubeObject.levelPos, direction);
 				isGrabbing = levelManager.getCubeObjIn(cubeObject.levelPos + cubeObject.orientation) != null;
@@ -77,6 +86,7 @@ public class Character: MonoBehaviour {
 				levelManager.move(cubeObject.levelPos, direction);
 			}
 		} else if (direction == cubeObject.orientation * -1) {
+			characterAnimator.SetBool("isMovingBack", true);
 			//can't jump up backwards
 			if (isGrabbing) {
 				levelManager.move(facingBlock.levelPos, direction);
@@ -91,6 +101,7 @@ public class Character: MonoBehaviour {
 			cubeObject.updateOrientation(direction);
 			//TODO: rotate block on head (?)
 		}
+		characterAnimator.SetBool("isGrabbing", isGrabbing);
 		
 	}
 	

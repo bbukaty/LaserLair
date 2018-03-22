@@ -10,7 +10,7 @@ public class CubeObject: MonoBehaviour {
 
     protected LevelManager levelManager;
 
-    private bool isMoving;
+    public bool isMoving;
     private float timeStartedMoving;
 	private Vector3 startPosition;
 	private Vector3 endPosition;
