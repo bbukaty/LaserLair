@@ -9,14 +9,14 @@ public class Character: MonoBehaviour {
 
 	private bool isGrabbing;
     private LevelManager levelManager;
-	private PlayerManager playerManager;
+	private CharacterManager characterManager;
 	private CubeObject cubeObject;
 
 	void Awake() {
 		levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		Debug.Assert(levelManager != null, "Warning: Level Manager object not found in scene!");
-		playerManager = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
-		Debug.Assert(playerManager != null, "Warning: Spawner object not found in scene!");
+		characterManager = GameObject.Find("CharacterManager").GetComponent<CharacterManager>();
+		Debug.Assert(characterManager != null, "Warning: Spawner object not found in scene!");
 		cubeObject = GetComponent<CubeObject>();
 		Debug.Assert(cubeObject != null, "Warning: Character initialized with no CubeObject attached!");
 		isGrabbing = false;
@@ -94,6 +94,6 @@ public class Character: MonoBehaviour {
 	}
 
 	void OnDestroy() {
-		playerManager.onCharacterDeath();
+		characterManager.onCharacterDeath();
 	}
 }

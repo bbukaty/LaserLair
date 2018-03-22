@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class PlayerManager : MonoBehaviour {
+public class CharacterManager : MonoBehaviour {
 
 	// prefabs that the spawner creates
 	public Transform buttonPrefab;
@@ -128,17 +128,17 @@ public class PlayerManager : MonoBehaviour {
 		gameIsPaused = true;	
 	}
 
-	private void LoadMenu() {
+	public void LoadMenu() {
 		Time.timeScale = 1f;
 		SceneManager.LoadScene("Level Select");
 	}
 
-	private void RestartLevel() {
+	public void RestartLevel() {
 		Time.timeScale = 1f;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 
-	private void QuitGame() {
+	public void QuitGame() {
 		Application.Quit();
 	}
 }
