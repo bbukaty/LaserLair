@@ -1810,6 +1810,7 @@ MonoBehaviour:
   explodeClip: {fileID: 8300000, guid: 3f5c01dd1e7789f45bff62bb48e39b4b, type: 3}
   scientistClip: {fileID: 8300000, guid: 3e9463213d2384d9f97e69bfbcbd3c66, type: 3}
   blockClip: {fileID: 8300000, guid: cb5cf0f59610f16478fbde191116e6e3, type: 3}
+  movingBlocks: 0
 --- !u!4 &304339527
 Transform:
   m_ObjectHideFlags: 0
@@ -3210,8 +3211,8 @@ MonoBehaviour:
   - {fileID: 4355906219860550, guid: 49849d73e8578234589244e194614d31, type: 2}
   - {fileID: 4007361617841082, guid: 8e961917f7d5ca941901e970b589559f, type: 2}
   buttonSprites:
-  - {fileID: 21300000, guid: 71afaa98a650abb4db316048db05c07e, type: 3}
-  - {fileID: 21300000, guid: 658c1c880c850c047b59b22698c36ab6, type: 3}
+  - {fileID: 21300000, guid: be88edc1f708347998b77711ac35ef9d, type: 3}
+  - {fileID: 21300000, guid: df2292809ca154e8c9164c18f39232ab, type: 3}
   spawnButtonPanelUI: {fileID: 807991877}
   gameOverUI: {fileID: 926915322}
   pauseMenuUI: {fileID: 159562492}
@@ -4583,15 +4584,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5529412}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 59ff40bbdac8e486a80fc86401b3a01c, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
