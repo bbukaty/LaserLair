@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 11d66d57bca45324d9b37d6a36e52475
-timeCreated: 1520755873
+guid: 77ef959b2e475b5439ff469b28b689e5
+timeCreated: 1521688360
 licenseType: Free
 MonoImporter:
   externalObjects: {}
@@ -8,8 +8,9 @@ MonoImporter:
   defaultReferences:
   - buttonPrefab: {fileID: 224694288127943604, guid: 670cb6484e59ebf41afe5c200ecbe391,
       type: 2}
-  - buttonPanel: {instanceID: 0}
-  - playerCam: {instanceID: 0}
+  - spawnButtonPanelUI: {instanceID: 0}
+  - pauseMenuUI: {instanceID: 0}
+  - charCam: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
