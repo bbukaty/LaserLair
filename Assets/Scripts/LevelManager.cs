@@ -7,11 +7,18 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour {
 
 	public GameObject explosionAnimation;
+	public int movingBlocks;
+
 	private CubeObject[,,] level;
 	private List<LaserBlock> laserBlocks;
+	private List<Vector3Int> updatedBlocks;
+	private bool waitingForConsequences;
 
 	void Awake() {
 		laserBlocks = new List<LaserBlock>();
+		updatedBlocks = new List<Vector3Int>();
+		movingBlocks = 0;
+		waitingForConsequences = false;
 	}
 
 	void Start() {
@@ -96,12 +103,16 @@ public class LevelManager : MonoBehaviour {
 	///Moves the cubeObject at pos in direction, pushing blocks in the way and updating the level with the consequences of the move.
 	///</summary>
 	public void move(Vector3Int pos, Vector3Int direction) {
-		List<Vector3Int> updatedBlocks = new List<Vector3Int>();
-		tryPush(pos, direction, updatedBlocks);
-		bool stillFalling = true;
-		while (stillFalling) {
+		if (!waitingForConsequences) {
+			tryPush(pos, direction, updatedBlocks);
+			waitingForConsequences = true;
+		}
+	}
+
+	void Update() {
+		if (waitingForConsequences && movingBlocks == 0) {
 			getMoveConsequences(updatedBlocks); // this might add more blocks to the list
-			stillFalling = iterateFalling(updatedBlocks);
+			waitingForConsequences = iterateFalling(updatedBlocks);
 		}
 	}
 
@@ -164,7 +175,6 @@ public class LevelManager : MonoBehaviour {
 			} else if (block is Scientist && getCubeObjIn(blockPos + Vector3Int.down) is GoalBlock) {
 				win();
 			}
-			
 		}
 	}
 
@@ -250,7 +260,6 @@ public class LevelManager : MonoBehaviour {
 			Vector3Int currPos = pos + Vector3Int.up;
 			// add blocks above to updatedBlocks so they fall after their foundation is destroyed
 			while (isInBounds(currPos) && getCubeObjIn(currPos) != null) {
-				Debug.Log("add above to updated");
 				updatedBlocks.Add(currPos);
 				currPos += Vector3Int.up;
 			}
