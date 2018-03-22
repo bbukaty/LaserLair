@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23344281420419872}
   - component: {fileID: 54192830026340394}
   - component: {fileID: 114054775641024930}
+  - component: {fileID: 65183810736085616}
   m_Layer: 0
   m_Name: staticBlock
   m_TagString: Untagged
@@ -99,6 +100,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65183810736085616
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1656541258088184}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.0000005, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114054775641024930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -112,7 +125,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   orientation: {x: 0, y: 0, z: 0}
   levelPos: {x: 0, y: 0, z: 0}
-  corpsePrefab: {fileID: 0}
   isMovable: 0
-  diesToExplosion: 0
-  diesToLaser: 0

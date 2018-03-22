@@ -10,19 +10,26 @@ public class Spawner : MonoBehaviour {
 	public Transform[] robotPrefabs;
 	public Sprite[] buttonSprites;
 	public Vector3Int spawnLoc;
-	public FollowCamera playerCam;
+	public FollowCamera charCam;
 
-	private Transform currPlayer;
-	private Transform levelManager;
-	private RectTransform panelPos;
+	private Transform currChar;
+	private bool charIsScientist;
+	private LevelManager levelManager;
+	// for panel movement
+	private bool panelIsMoving;
+	private float timeStartedLerping;
+	private Vector2 startPosition;
+	private Vector2 endPosition;
+	
+
 	
 
 	void Awake() {
-		levelManager = GameObject.Find("LevelManager").transform;
+		levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 		Debug.Assert(levelManager != null, "Warning: Level Manager script not found in scene!");
 		Debug.Assert(robotPrefabs.Length == buttonSprites.Length, "Warning: Spawner prefabs and sprites lists don't match!");
-		currPlayer = null;
-		panelPos = buttonPanel.GetComponent<RectTransform>();
+		currChar = null;
+		charIsScientist = false;
 	}
 
 	void Start() {
@@ -35,21 +42,45 @@ public class Spawner : MonoBehaviour {
 		}
 	}
 
-
-	void Update() {
-		if (currPlayer == null && panelPos.anchoredPosition != Vector2.zero) {
-			panelPos.anchoredPosition = Vector2.zero;
-		} 
-	}
-
 	public void spawn(Transform robotPrefab) {
-		// Reminder: if the previous player died or was deactivated, its gameObject was destroyed and replaced.
-		if (currPlayer == null) {
-			panelPos.anchoredPosition += Vector2.down * 180f;
-			currPlayer = Instantiate(robotPrefab, spawnLoc, Quaternion.identity, levelManager);
-			levelManager.GetComponent<LevelManager>().addBlock(currPlayer.GetComponent<CubeObject>());
-			playerCam.follow(currPlayer);
+		if (currChar == null) { // make sure you can't press the button multiple times
+			currChar = Instantiate(robotPrefab, spawnLoc, Quaternion.identity, levelManager.transform);
+			CubeObject charCubeObj = currChar.GetComponent<CubeObject>();
+			// we'll need this bool to check later because the actual object will have been destroyed
+			charIsScientist = charCubeObj is Scientist;
+			levelManager.addBlock(charCubeObj);
+			charCam.follow(currChar);
+			moveSpawnPanel(true);
 		}
 	}
 
+	public void onCharacterDeath() {
+		if (charIsScientist) {
+			//display game over + restart
+			Debug.Log("Game Over");
+		} else {
+			// reset spawn button panel into view
+			moveSpawnPanel(false);
+		}
+	}
+
+	private void moveSpawnPanel(bool hiding) {
+		panelIsMoving = true;
+		timeStartedLerping = Time.time;
+		startPosition = hiding ? Vector2.zero : Vector2.down * 180f;
+		endPosition = hiding ? Vector2.down * 180f : Vector2.zero;
+	}
+
+	void Update() {
+		if (panelIsMoving) {
+			float timeSinceStarted = Time.time - timeStartedLerping;
+            float percentageComplete = timeSinceStarted / 0.4f;
+ 
+            buttonPanel.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp (startPosition, endPosition, percentageComplete);
+ 
+            if(percentageComplete >= 1.0f) {
+                panelIsMoving = false;
+            }
+		}
+	}
 }
