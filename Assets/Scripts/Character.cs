@@ -6,11 +6,13 @@ public class Character: MonoBehaviour {
 
 	public bool canGrab;
 	public bool canJump; 
+	public AudioClip walkingClip;
 
 	private bool isGrabbing;
     private LevelManager levelManager;
 	private CharacterManager characterManager;
 	private CubeObject cubeObject;
+    private AudioSource audioSource;
 
 	void Awake() {
 		levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
@@ -20,17 +22,28 @@ public class Character: MonoBehaviour {
 		cubeObject = GetComponent<CubeObject>();
 		Debug.Assert(cubeObject != null, "Warning: Character initialized with no CubeObject attached!");
 		isGrabbing = false;
+		audioSource = GetComponent<AudioSource>();
 	}
 
+	private void walkSound() {
+		audioSource.clip = walkingClip;
+		audioSource.volume = Random.Range(0.8f, 1f);
+		audioSource.pitch = Random.Range(0.8f, 1.1f);
+		audioSource.Play();
+	}
     // Update is called once per frame
 	void Update () {
 		if (Input.GetButtonDown ("Left")) {
+			walkSound();
 			applyInput(new Vector3Int(-1, 0, 0));
 		} else if (Input.GetButtonDown ("Right")) {
+			walkSound();
 			applyInput(new Vector3Int(1, 0, 0));
 		} else if (Input.GetButtonDown ("Up")) {
+			walkSound();
 			applyInput(new Vector3Int(0, 0, 1));
 		} else if (Input.GetButtonDown ("Down")) {
+			walkSound();
 			applyInput(new Vector3Int(0, 0, -1));
 		} else if (Input.GetButtonDown("Grab") && canGrab) {
 			tryGrab();
