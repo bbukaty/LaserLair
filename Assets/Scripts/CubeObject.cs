@@ -10,12 +10,23 @@ public class CubeObject: MonoBehaviour {
 
     protected LevelManager levelManager;
 
+    private bool isMoving;
+    private float timeStartedMoving;
+	private Vector3 startPosition;
+	private Vector3 endPosition;
+
+    private bool isRotating;
+    private float timeStartedRotating;
+    private Vector3 startRotation;
+	private Vector3 endRotation;
+
     void Awake() {
         // find the level manager object in the scene to get level data from
         Debug.Assert(transform.parent != null, "Warning: Level Manager script not found in scene!");
 		levelManager = transform.parent.GetComponent<LevelManager>();
         initOrientation();
 		initLevelPos();
+        isMoving = false;
 	}
 
     private void initLevelPos() {
@@ -37,17 +48,50 @@ public class CubeObject: MonoBehaviour {
 	}
 
     public void updatePos(Vector3Int movement) {
+        levelManager.movingBlocks += 1;
         levelPos += movement;
-        transform.Translate(movement, Space.World);
+        // transform.Translate(movement, Space.World);
+        isMoving = true;
+        timeStartedMoving = Time.time;
+        startPosition = transform.position;
+        endPosition = transform.position + movement;
     }
 
     public void updateOrientation(Vector3Int direction) {
-		transform.forward = direction;
+		// transform.forward = direction;
+        isRotating = true;
 		orientation = direction;
+        timeStartedRotating = Time.time;
+        startRotation = transform.forward;
+        endRotation = direction;
 	}
 
     public void die() {
 		levelManager.animateExplosion(levelPos);
-		Destroy(gameObject);
+		DestroyImmediate(gameObject);
 	}
+
+    void Update() {
+        if (isMoving) {
+			float timeSinceStarted = Time.time - timeStartedMoving;
+            float percentageComplete = timeSinceStarted / 0.1f;
+ 
+            transform.position = Vector3.Lerp(startPosition, endPosition, percentageComplete);
+ 
+            if (percentageComplete >= 1.0f) {
+                isMoving = false;
+                levelManager.movingBlocks -= 1;
+            }
+        }
+        if (isRotating) {
+            float timeSinceStarted = Time.time - timeStartedRotating;
+            float percentageComplete = timeSinceStarted / 0.1f;
+ 
+            transform.forward = Vector3.Lerp(startRotation, endRotation, percentageComplete);
+ 
+            if (percentageComplete >= 1.0f) {
+                isRotating = false;
+            }
+        }
+    }
 }
