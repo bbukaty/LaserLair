@@ -7,10 +7,17 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour {
 
 	public GameObject explosionAnimation;
+	public AudioClip explodeClip;
+	public AudioClip scientistClip;
+	public AudioClip blockClip;
+
 	private CubeObject[,,] level;
 	private List<LaserBlock> laserBlocks;
+    private AudioSource audioSource;
+
 
 	void Awake() {
+		audioSource = GetComponent<AudioSource>();
 		laserBlocks = new List<LaserBlock>();
 	}
 
@@ -146,11 +153,17 @@ public class LevelManager : MonoBehaviour {
 		foreach (LaserBlock laserBlock in laserBlocks) {
 			CubeObject laserTarget = getLaserTarget(laserBlock.levelPos, laserBlock.orientation);
 			if (laserTarget is ExplodeBlock) {
+				audioSource.clip = explodeClip;
+     			audioSource.Play();
 				explodeOutwards(laserTarget.levelPos, updatedBlocks);
 			} else if (laserTarget is BlockRobot) {
+				audioSource.clip = blockClip;
+     			audioSource.Play();
 				((BlockRobot)laserTarget).spawnCorpse();
 				laserTarget.die();
 			} else if (laserTarget is Scientist) {
+				audioSource.clip = scientistClip;
+     			audioSource.Play();
 				laserTarget.die();
 			}
 		}
