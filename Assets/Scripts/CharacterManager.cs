@@ -14,6 +14,7 @@ public class CharacterManager : MonoBehaviour {
 	
 	// references to objects in scene
 	public Transform spawnButtonPanelUI;
+	public Transform gameOverUI;
 	public Transform pauseMenuUI;
 	public FollowCamera charCam;
 
@@ -64,7 +65,7 @@ public class CharacterManager : MonoBehaviour {
 
 	public void onCharacterDeath() {
 		if (charIsScientist) {
-			//display game over + restart
+			 GameOver();
 			Debug.Log("Game Over");
 		} else {
 			// reset spawn button panel into view
@@ -127,6 +128,13 @@ public class CharacterManager : MonoBehaviour {
 		}
 		gameIsPaused = true;	
 	}
+
+	private void GameOver() {
+		gameOverUI.gameObject.SetActive(true);
+		spawnButtonPanelUI.gameObject.SetActive(false);
+	}
+
+
 
 	public void LoadMenu() {
 		Time.timeScale = 1f;
