@@ -25,6 +25,7 @@ public class CharacterManager : MonoBehaviour {
 	private bool charIsScientist;
 	private LevelManager levelManager;
 	private bool gameIsPaused;
+	private bool isGameOver;
 
 	// for panel movement
 	private bool panelIsMoving;
@@ -39,6 +40,7 @@ public class CharacterManager : MonoBehaviour {
 		currChar = null;
 		charIsScientist = false;
 		gameIsPaused = false;
+		isGameOver = false;
 	}
 
 	void Start() {
@@ -65,8 +67,7 @@ public class CharacterManager : MonoBehaviour {
 
 	public void onCharacterDeath() {
 		if (charIsScientist) {
-			 GameOver();
-			Debug.Log("Game Over");
+			GameOver();
 		} else {
 			// reset spawn button panel into view
 			moveSpawnPanel(false);
@@ -97,6 +98,9 @@ public class CharacterManager : MonoBehaviour {
 	}
 
 	public void togglePause() {
+		if (isGameOver) {
+			return;
+		}
 		if (gameIsPaused) {
 			Resume();
 		} else {
@@ -130,11 +134,9 @@ public class CharacterManager : MonoBehaviour {
 	}
 
 	private void GameOver() {
+		isGameOver = true;
 		gameOverUI.gameObject.SetActive(true);
-		spawnButtonPanelUI.gameObject.SetActive(false);
 	}
-
-
 
 	public void LoadMenu() {
 		Time.timeScale = 1f;
