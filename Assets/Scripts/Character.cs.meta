@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: 399490e656689934ab8c56c7624af5f8
-timeCreated: 1520730427
+timeCreated: 1521723959
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - walkingClip: {fileID: 8300000, guid: 95472a00d5ce5430cbae13a5e9a54ee6, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
