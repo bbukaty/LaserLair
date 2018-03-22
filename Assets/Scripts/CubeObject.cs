@@ -48,6 +48,6 @@ public class CubeObject: MonoBehaviour {
 
     public void die() {
 		levelManager.animateExplosion(levelPos);
-		Destroy(gameObject);
+		DestroyImmediate(gameObject);
 	}
 }

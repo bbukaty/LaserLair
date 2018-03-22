@@ -169,8 +169,6 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	private bool iterateFalling(List<Vector3Int> blockPositions) {
-		for (int i = 0; i < blockPositions.Count; i++) {
-		}
 		bool blocksFell = false;
 		for (int i = 0; i < blockPositions.Count; i++) {
 			CubeObject blockToFall = getCubeObjIn(blockPositions[i]);
@@ -249,6 +247,13 @@ public class LevelManager : MonoBehaviour {
 			explodeOutwards(pos, updatedBlocks);
 		} else if (occupant is BlockRobot || occupant is Scientist || occupant is CrackedBlock || occupant is NormalBlock) {
 			occupant.die();
+			Vector3Int currPos = pos + Vector3Int.up;
+			// add blocks above to updatedBlocks so they fall after their foundation is destroyed
+			while (isInBounds(currPos) && getCubeObjIn(currPos) != null) {
+				Debug.Log("add above to updated");
+				updatedBlocks.Add(currPos);
+				currPos += Vector3Int.up;
+			}
 		}
 	}
 
