@@ -130,7 +130,7 @@ public class CharacterManager : MonoBehaviour {
 
 	public void LoadMenu() {
 		Time.timeScale = 1f;
-		SceneManager.LoadScene("Level Select");
+		SceneManager.LoadScene("Main Menu");
 	}
 
 	public void RestartLevel() {
