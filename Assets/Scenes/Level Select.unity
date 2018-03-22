@@ -168,8 +168,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 190, y: 190}
-  m_Spacing: {x: 10, y: 10}
+  m_CellSize: {x: 150, y: 150}
+  m_Spacing: {x: 8, y: 8}
   m_Constraint: 2
   m_ConstraintCount: 1
 --- !u!114 &284953268
@@ -384,7 +384,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.2680387, y: -27}
+  m_AnchoredPosition: {x: -4, y: -39}
   m_SizeDelta: {x: -0.000061035, y: -244}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1056378934
@@ -570,7 +570,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: LEVEL SELECTOR
+  m_text: LEVEL SELECT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d62a573c923f5cb47b8ff65261033b90, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: d62a573c923f5cb47b8ff65261033b90, type: 2}
@@ -638,7 +638,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 177.85226, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1456801051}
-    characterCount: 14
+    characterCount: 12
     spriteCount: 0
     spaceCount: 1
     wordCount: 2
@@ -838,14 +838,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.28627452, g: 0.25882354, b: 0.39607844, a: 0.9843137}
+  m_Color: {r: 0.9647059, g: 0.78039217, b: 0.5254902, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 36ad2c113bc014c94ad3ee174bcbbf12, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
