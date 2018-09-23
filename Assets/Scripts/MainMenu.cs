@@ -5,9 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-public void playGame()
+public Transform menuCamera;
+
+public void showPrologue()
 {
-	SceneManager.LoadScene("Prologue");
+	menuCamera.transform.position = new Vector3(8.65f, 1f, -10f);
+}
+
+public void showInstructions()
+{
+	menuCamera.transform.position = new Vector3(17.3f, 1f, -10f);
+}
+
+public void loadFirstLevel()
+{
+	SceneManager.LoadScene("level1");
 }
 
 public void loadLevelSelect() 
@@ -15,7 +27,7 @@ public void loadLevelSelect()
 	SceneManager.LoadScene("Level Select");
 }
 
-public void QuitGame() 
+public void quit()
 {
 	Application.Quit();
 }
