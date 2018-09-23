@@ -10,5 +10,6 @@ public class TextTrigger : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		previousText.SetActive(false);
 		nextText.SetActive(true);
+		Destroy(gameObject);
 	}
 }
