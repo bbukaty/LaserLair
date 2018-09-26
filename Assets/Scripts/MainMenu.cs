@@ -12,11 +12,6 @@ public void showPrologue()
 	menuCamera.transform.position = new Vector3(17.58f, 1f, -10f);
 }
 
-public void showInstructions()
-{
-	menuCamera.transform.position = new Vector3(37.58f, 1f, -10f);
-}
-
 public void loadFirstLevel()
 {
 	SceneManager.LoadScene("level1");
