@@ -7,16 +7,16 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour {
 
 	public GameObject explosionAnimation;
-  public AudioClip explodeClip;
+  	public AudioClip explodeClip;
 	public AudioClip scientistClip;
 	public AudioClip blockClip;
   
-  public int movingBlocks;
+  	public int movingBlocks;
   
-  private AudioSource audioSource;
-  private CubeObject[,,] level;
+  	private AudioSource audioSource;
+  	private CubeObject[,,] level;
 	private List<LaserBlock> laserBlocks;
-  private List<Vector3Int> updatedBlocks;
+  	private List<Vector3Int> updatedBlocks;
 	private bool waitingForConsequences;
 
 	void Awake() {
