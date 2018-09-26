@@ -64,5 +64,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efac2f994c5efc74198f2339093e243c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previousText: {fileID: 0}
-  nextText: {fileID: 0}
+  textBoxes:
+  - {fileID: 0}
+  - {fileID: 0}

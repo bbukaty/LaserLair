@@ -9,12 +9,12 @@ public Transform menuCamera;
 
 public void showPrologue()
 {
-	menuCamera.transform.position = new Vector3(8.65f, 1f, -10f);
+	menuCamera.transform.position = new Vector3(17.58f, 1f, -10f);
 }
 
 public void showInstructions()
 {
-	menuCamera.transform.position = new Vector3(17.3f, 1f, -10f);
+	menuCamera.transform.position = new Vector3(37.58f, 1f, -10f);
 }
 
 public void loadFirstLevel()

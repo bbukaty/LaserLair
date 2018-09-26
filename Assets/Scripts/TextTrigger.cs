@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TextTrigger : MonoBehaviour {
 
-	public GameObject previousText;
-	public GameObject nextText;
+	public List<GameObject> textBoxes;
 	
 	void OnTriggerEnter(Collider other) {
-		previousText.SetActive(false);
-		nextText.SetActive(true);
-		Destroy(gameObject);
+		foreach (GameObject textBox in textBoxes) {
+			textBox.SetActive(!textBox.activeSelf);
+			Destroy(gameObject);
+		}
 	}
 }
