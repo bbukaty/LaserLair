@@ -11,7 +11,8 @@ Download the game [here.](http://www.buckbukaty.com/LaserLair_Windows.zip)
 Extract all the contents to the same directory and run `LaserLair.exe`.  
 
 **Mac:**  
-Coming Soon!
+Download the game [here.](http://www.buckbukaty.com/LaserLair_Mac.zip)  
+Extract all the contents to the same directory and open `LaserLair.app`.  
 
 # Credits
 **Design and Engineering:**  
@@ -20,7 +21,7 @@ Gabe Saldivar
 
 **Art and Asset Creation:**  
 Katherine Liu - [website](http://www.katherinezliu.com)  
-Sofya Ogunseitan  
+Sofya Ogunseitan - [github](https://github.com/sofya522)  
 
 # Media
 
