@@ -7,11 +7,11 @@ Made with ❤ for Stanford's CS248: Interactive Computer Graphics.
 # Installation
 
 **Windows:**  
-Download the game [here.](http://www.buckbukaty.com/LaserLair_Windows.zip)  
+Download the game [here.](https://www.buckbukaty.com/files/LaserLair_Windows.zip)  
 Extract all the contents to the same directory and run `LaserLair.exe`.  
 
 **Mac:**  
-Download the game [here.](http://www.buckbukaty.com/LaserLair_Mac.zip)  
+Download the game [here.](https://buckbukaty.com/files/LaserLair_Mac.zip)  
 Extract all the contents to the same directory and open `LaserLair.app`.  
 
 # Credits
